@@ -171,7 +171,7 @@ The `00 Focus Zone/` (or `00 专注区/`) is the heart of the system:
 
 <div align="center">
 
-![Focus Zone in Obsidian](docs/images/obsidian-focus-zone-demo.png)
+![Focus Zone in Obsidian](docs/images/obsidian-focus-zone-demo-v2.png)
 *Complete Focus Zone structure in Obsidian*
 
 </div>

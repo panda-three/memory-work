@@ -171,7 +171,7 @@ Layer 3 · 程序性记忆  PROCEDURES.md             「遇到 X 就做 Y」的
 
 <div align="center">
 
-![Obsidian 中的专注区](docs/images/obsidian-focus-zone-demo.png)
+![Obsidian 中的专注区](docs/images/obsidian-focus-zone-demo-v2.png)
 *在 Obsidian 中查看专注区的完整结构*
 
 </div>

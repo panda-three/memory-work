@@ -169,6 +169,13 @@ The `00 Focus Zone/` (or `00 专注区/`) is the heart of the system:
 └── _archive/          ← Past weeks
 ```
 
+<div align="center">
+
+![Focus Zone in Obsidian](docs/images/obsidian-focus-zone-demo.png)
+*Complete Focus Zone structure in Obsidian*
+
+</div>
+
 **One week, one file.** Archive on Friday, fresh start on Monday. You never manage the backlog—it's always archived and searchable.
 
 ---

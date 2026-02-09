@@ -169,6 +169,13 @@ Layer 3 · 程序性记忆  PROCEDURES.md             「遇到 X 就做 Y」的
 └── _归档/             ← 历史周记录
 ```
 
+<div align="center">
+
+![Obsidian 中的专注区](docs/images/obsidian-focus-zone-demo.png)
+*在 Obsidian 中查看专注区的完整结构*
+
+</div>
+
 **一周一个文件。** 周五归档，周一新建。你不需要管理积压——全部归档可检索。
 
 ---

@@ -57,8 +57,15 @@ AI 负责其余：整合历史信息、匹配相关语料、执行结构化输�
 
 **你不需要手动配置任何东西。** 直接开聊。
 
-![首次运行演示](docs/images/first-run-demo.png)
-*智能初始化实况：语言选择、文件设置，开箱即用*
+<div align="center">
+
+![首次运行演示 - 语言选择](docs/images/first-run-demo.png)
+*步骤 1：语言选择与文件初始化*
+
+![首次运行演示 - 用户配置](docs/images/user-setup-demo.png)
+*步骤 2：口述式用户画像配置*
+
+</div>
 
 ### 日常使用：口述优先
 

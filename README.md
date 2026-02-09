@@ -57,8 +57,15 @@ When you clone this repo and open it in Claude Code, the AI automatically:
 
 **You don't configure anything manually.** Just talk.
 
-![First Run Demo](docs/images/first-run-demo.png)
-*Smart initialization in action: language selection, file setup, and ready to go*
+<div align="center">
+
+![First Run Demo - Language Selection](docs/images/first-run-demo.png)
+*Step 1: Language selection and file initialization*
+
+![First Run Demo - User Setup](docs/images/user-setup-demo.png)
+*Step 2: Voice-first user profile configuration*
+
+</div>
 
 ### Daily Usage: Voice-First Workflow
 

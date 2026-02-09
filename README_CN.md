@@ -147,17 +147,27 @@ Layer 3 · 程序性记忆  PROCEDURES.md             「遇到 X 就做 Y」的
 
 ## 快速开始
 
-### 1. 克隆
+### 1. 克隆仓库
+
+打开终端，运行：
 
 ```bash
 git clone https://github.com/yiliqi78/memory-work.git
 ```
 
+或直接下载：[下载 ZIP](https://github.com/yiliqi78/memory-work/archive/refs/heads/main.zip)
+
 ### 2. 用 Claude Code 打开
 
 ```bash
 cd memory-work
-claude .   # 或用 Cursor/VS Code 打开
+claude .
+```
+
+或者使用 Cursor / VS Code：
+```bash
+cd memory-work
+cursor .   # 或: code .
 ```
 
 ### 3. 开始对话

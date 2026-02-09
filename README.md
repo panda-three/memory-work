@@ -147,17 +147,27 @@ The `00 Focus Zone/` (or `00 专注区/`) is the heart of the system:
 
 ## Quick Start
 
-### 1. Clone
+### 1. Clone the Repository
+
+Open Terminal and run:
 
 ```bash
 git clone https://github.com/yiliqi78/memory-work.git
 ```
 
+Or download directly: [Download ZIP](https://github.com/yiliqi78/memory-work/archive/refs/heads/main.zip)
+
 ### 2. Open in Claude Code
 
 ```bash
 cd memory-work
-claude .   # or open in Cursor/VS Code with Claude extension
+claude .
+```
+
+Or if using Cursor / VS Code with Claude extension:
+```bash
+cd memory-work
+cursor .   # or: code .
 ```
 
 ### 3. Start Talking

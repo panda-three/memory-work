@@ -1,0 +1,31 @@
+# Obsidian
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Personal files (keep private)
+USER.md
+01 Materials/About Me/*
+!01 Materials/About Me/.gitkeep
+
+# Private memories (users should customize this)
+MEMORY.md
+# Uncomment if you want to keep memories private:
+# PROCEDURES.md
+# 00 Focus Zone/MEMORY_LOG.md
+
+# Week files (these are personal)
+00 Focus Zone/_this_week.md
+00 Focus Zone/_archive/*
+00 Focus Zone/*_schedule.ics
+
+# Smart Connections (if using)
+.smart-env/
+
+# Temporary files
+*.tmp
+*.bak
+*~

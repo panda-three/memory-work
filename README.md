@@ -66,11 +66,29 @@ You: "This week I need to finish the proposal, prep for Wednesday's
 Claude:
 1. Breaks into 3 tasks, writes to _this_week.md
 2. Searches your vault for related materials
-3. Marks Wednesday meeting in schedule
-4. Asks you to clarify uncertainties
+3. Asks you to clarify uncertainties
+4. Proactively asks: "Want me to generate a calendar file?"
 ```
 
 You dictate naturally. Claude structures. **Your flow state stays protected.**
+
+### Calendar Generation
+
+After discussing tasks, Claude proactively guides you to create calendar events:
+
+```
+Claude: "Tasks are organized. I noticed some have time arrangements:
+         1. Wednesday 10:00-12:00 Client meeting
+         2. Friday 14:00 deadline - Submit proposal
+
+         Want me to generate a calendar file you can import?"
+
+You: "Sure, the client meeting is 10:00 to 11:30"
+
+Claude: [Generates 2026-W06_schedule.ics]
+        "Calendar file generated. Double-click to import to macOS Calendar,
+         or use 'Import' in Google Calendar."
+```
 
 ### Weekly Rhythm
 

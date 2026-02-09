@@ -62,7 +62,7 @@ When you clone this repo and open it in Claude Code, the AI automatically:
 ![First Run Demo - Language Selection](docs/images/first-run-demo.png)
 *Step 1: Language selection and file initialization*
 
-![First Run Demo - User Setup](docs/images/user-setup-demo.png)
+![First Run Demo - User Setup](docs/images/user-setup-demo-v2.png)
 *Step 2: Voice-first user profile configuration*
 
 </div>

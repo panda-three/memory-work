@@ -83,17 +83,33 @@ Execute after first-run detection passes OR after initialization completes.
 ```
 0. Read CLAUDE.md                    ← System entry (auto-injected by Cowork)
 1. Execute datetime-check skill      ← Get calibrated local time (forced first load)
-2-4. Execute in parallel:
+2-5. Execute in parallel:
    2. Scan Focus Zone + read _this_week.md
    3. Read MEMORY_LOG.md tail (last 20 lines)
    4. Read SOUL.md
+   5. Scan 07 Inbox/ for new files    ← Inbox capture processing
+6. Life Red Dot reminder             ← Read USER.md "人生红点" section, ask one thought-provoking question
 ```
 
 **Execution Order:**
 - Step 1 completes first (datetime-check result affects sync mode in step 2)
-- Steps 2, 3, 4 execute in parallel after step 1 completes
+- Steps 2, 3, 4, 5 execute in parallel after step 1 completes
+- Step 6 executes after step 5 completes (needs USER.md context)
 
-**Transition Language (after step 1, before launching 2-4):**
+**Inbox Processing (Step 5):**
+- List all files in `07 Inbox/` (exclude .gitkeep)
+- If files exist: read each, categorize (人生红点思考 / 产品灵感 / 学习笔记 / 其他)
+- Summarize to user, propose where to route each item
+- After user confirms, move content to appropriate location and clear Inbox
+
+**Life Red Dot Reminder (Step 6):**
+- Read the "人生红点" section from USER.md
+- Based on current week's tasks and recent Inbox items, generate ONE thought-provoking question
+- Question should target Panda's current bottleneck (e.g., product direction)
+- Do NOT report progress; trigger self-reflection instead
+- Record Panda's response in MEMORY.md if it reveals new thinking patterns
+
+**Transition Language (after step 1, before launching 2-5):**
 Use conversational tone to preview what you're about to check. Example:
 - "Alright, let me see what's in the focus zone this week..."
 - "Let me check the current state and catch up on context..."

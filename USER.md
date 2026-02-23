@@ -2,160 +2,143 @@
 title: USER.md
 type: system-instruction
 priority: 0
-description: User profile index and identity framework. Template for initialization with placeholders—fill in during setup.
+description: 用户档案与协作框架
 created: 2026-02-19
-updated: 2026-02-19
+updated: 2026-02-21
 ---
 
 # USER.md
 
-User identity, professional context, and collaboration framework. This is a template file—replace all placeholders with actual information during initialization.
+Panda 的身份、工作背景与协作偏好。随使用逐步完善。
 
 ---
 
-## Core Identity
+## 核心身份
 
-- **Name**: [Your Name]
-- **Profession**: [Your Profession / Job Title]
-- **Location**: [Your City / Region]
-- **Timezone**: [e.g., UTC+8, PST]
+- **名字**: Panda
+- **职业**: 计算机教师 / 独立开发者
+- **地点**: 待补充
+- **时区**: UTC+8
 
-### Current Roles
+### 当前角色
 
-- [Role 1: e.g., Product Manager at Company X]
-- [Role 2: e.g., Course Instructor at University Y]
-- [Role 3: e.g., Independent Creator / Consultant]
-
----
-
-## Professional Domain
-
-### Primary Domains
-
-- [Domain 1: e.g., Product Design & Management]
-- [Domain 2: e.g., Education & Knowledge Sharing]
-- [Domain 3: e.g., Business Strategy]
-
-### Methodology Framework
-
-**Core Approach**: [Describe your primary methodology—e.g., "Design-driven product development with user-centered iteration" or "Systems thinking + lean methodology"]
-
-**Key Methods**:
-- [Method 1: e.g., User research & persona mapping]
-- [Method 2: e.g., Rapid prototyping & A/B testing]
-- [Method 3: e.g., OKR-based goal setting]
+- 中职计算机老师（主业）
+- AI 编程出海业务（副业，探索期）
+- 3 岁女儿的父亲
 
 ---
 
-## Interaction Preferences
+## 人生红点（每日必检）
 
-### Communication Style
+> **类型**: 赚钱型（现实主义 × 追求结果）
+> **目标**: 通过 AI 编程出海，换取财务自由，以换取对美好生活的绝对选择权和安全底线。
 
-- **Tone**: [e.g., Direct, collaborative, solutions-focused]
-- **Detail Level**: [e.g., High-level summaries + deep dives on request]
-- **Format**: [e.g., Structured docs, conversational check-ins, async updates]
-- **Language**: [e.g., Default: Chinese, Technical: English as needed]
+### 里程碑路径
 
-### Work Style
+| 阶段 | 时间 | 关键词 |
+|------|------|--------|
+| AI 编程专家 | 近 3 个月 | 集成能力、组织能力 |
+| 积累期 | 3-12 个月 | 产品验证、用户增长 |
+| 爆发期 | 1-2 年 | 规模化、收入突破 |
+| 飞跃期 | 2 年+ | 财务自由、选择权 |
 
-- **Rhythm**: [e.g., Concentrated sprints Monday-Wednesday, review/adjustment Thursday-Friday]
-- **Decision Speed**: [e.g., Fast for tactical decisions, thorough for strategic ones]
-- **Collaboration**: [e.g., Prefer asynchronous input with sync checkpoints]
-- **Documentation**: [e.g., Inline during work, formal review at week-end]
+### 核心能力图谱
 
-### Tool Chain
+- **挖掘需求能力**（当前卡点：不知道做什么产品）
+- **深度使用 AI 能力**（业务集成 + 工具提效）
+- **社区驱动与生态运营**
 
-- **Knowledge Management**: [e.g., Obsidian, Roam Research, Notion]
-- **AI Collaboration**: [e.g., Claude for writing/planning, [other tools]]
-- **Writing Environment**: [e.g., Markdown in VS Code, Google Docs for collaborative drafts]
-- **Version Control**: [e.g., Git for code, date-versioning for documents]
-- **Project Tracking**: [e.g., Weekly markdown files, kanban board for active sprints]
+### 进步方式
 
-### Values
+- 最佳实践（向成功者学习）
+- 高效 IPO（快速迭代验证）
+- 刻意练习
 
-- [Value 1: e.g., Transparency in communication]
-- [Value 2: e.g., Continuous learning & iteration]
-- [Value 3: e.g., User-centric decision-making]
+### 当前卡点
 
----
+- 不确定做什么产品（工具软件 vs 卖货 vs 其他）
+- 需求挖掘能力待提升（正在通过课程学习补强）
 
-## Decision Style
+### 提醒机制
 
-### Competency Boundaries in Collaboration
-
-- **Autonomous**: [e.g., Content creation, design iteration, writing]
-- **Consultation Needed**: [e.g., Major product pivot, hiring decisions, budget allocation]
-- **Hands-Off**: [e.g., Sensitive financial decisions, personnel conflicts]
-
-### Risk & Strategy Orientation
-
-[Placeholder: Document your approach to uncertainty, timeframe preferences, etc.]
-
-Example: "Fast-fail culture for experiments; measured approach for customer-facing decisions; 6-month+ planning horizon for infrastructure."
+- 每次开机时，抛出一个与当前阶段相关的思考问题
+- 问题指向核心卡点，触发 Panda 自主思考
+- Panda 反馈思考结果后，记录思路演变轨迹
 
 ---
 
-## Team & Key People
+## 专业领域
 
-| Name | Nickname | Role | Context |
-|------|----------|------|---------|
-| [Name 1] | [Nickname] | [Role in your work] | [How you collaborate] |
-| [Name 2] | [Nickname] | [Role] | [How you collaborate] |
-| [Name 3] | [Nickname] | [Role] | [How you collaborate] |
+### 主要方向
+
+- 计算机职业教育
+- AI 编程产品开发（出海方向）
+- 个人知识与任务管理
+
+### 方法论
+
+待观察——随工作积累逐步记录。
 
 ---
 
-## Core Terminology
+## 交互偏好
 
-Abbreviations, jargon, and domain-specific terms used frequently in your work.
+### 沟通风格
 
-| Abbreviation | Full Name | Description |
+- **语言**: 全部使用中文（包括对话、文档、系统消息）
+- **语气**: 待观察
+- **详细程度**: 待观察
+- **格式**: 待观察
+
+### 工作节奏
+
+- **日常**: 白天上课，课后做副业
+- **假期**: 寒暑假（约 3 个月）全职投入副业
+- **决策风格**: 待观察
+- **文档习惯**: 待观察
+
+### 工具链
+
+待补充——随使用逐步记录。
+
+### 敏感区域
+
+无特殊限制。
+
+---
+
+## 决策风格
+
+待观察——随协作积累逐步记录。
+
+---
+
+## 团队与关键人物
+
+随需补充。
+
+---
+
+## 常用术语
+
+随需补充。
+
+---
+
+## 当前焦点
+
+**本周工作**: 见 [[_this_week]]
+
+**近期重点**:
+- 人生红点：AI 编程出海 → 财务自由（每日思考）
+- 当前卡点：产品方向未定，正在通过课程学习补需求挖掘能力
+- 学习中：李一舟、马克、豆芽老师课程（需求挖掘方向）
+
+---
+
+## 版本记录
+
+| 日期 | 变更 | 原因 |
 |------|------|------|
-| [Abbr 1] | [Full Name] | [What it means in your context] |
-| [Abbr 2] | [Full Name] | [What it means in your context] |
-| [Abbr 3] | [Full Name] | [What it means in your context] |
-
----
-
-## Detailed Archive Index
-
-Links to related foundational documents in the knowledge base:
-
-- [[01 Materials/About Me/core_profile]] — Core professional identity
-- [[01 Materials/About Me/background]] — Education, experience, career arc
-- [[01 Materials/About Me/expertise_map]] — Skills, certifications, knowledge depth
-- [[01 Materials/Methods]] — Personal methodology and frameworks
-- [[02 Tools/AI_collaboration_guide]] — How to work effectively with AI systems
-
----
-
-## Current Focus
-
-**Active Work Cycle**: See [[\\_this_week]] for current week's tasks, focus areas, and progress tracking.
-
-**Recent Highlights**:
-- [Project/initiative 1: Status]
-- [Project/initiative 2: Status]
-- [Project/initiative 3: Status]
-
----
-
-## Version Record
-
-| Date | Change | Rationale |
-|------|--------|-----------|
-| 2026-02-19 | Template created | Initial system setup |
-| [Date] | [Change description] | [Why] |
-| [Date] | [Change description] | [Why] |
-
----
-
-## Notes for Initialization
-
-1. **Start with Core Identity** — Name, profession, roles. This anchors everything else.
-2. **Fill Professional Domain next** — Your primary areas of focus and methodology.
-3. **Interaction Preferences** — Critical for Claude to match your collaboration style.
-4. **Team & Terminology** — Optional initially, fill as you reference them.
-5. **Archive Index** — Build incrementally as you organize related documents.
-
-Once complete, this file serves as the reference layer for all other memory and context systems. Update it when major role changes, methodology shifts, or team composition changes occur.
+| 2026-02-19 | 模板创建 | 系统初始化 |
+| 2026-02-21 | 首次初始化填写 | 用户对话完成基础信息采集 |

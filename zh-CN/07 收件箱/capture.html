@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="灵感捕捉">
+<title>灵感捕捉</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, sans-serif; background: #1a1a2e; color: #eee; padding: 20px; min-height: 100vh; }
+h1 { font-size: 20px; margin-bottom: 16px; color: #e94560; }
+textarea { width: 100%; height: 40vh; background: #16213e; color: #eee; border: 1px solid #333; border-radius: 8px; padding: 12px; font-size: 16px; resize: none; }
+textarea:focus { outline: none; border-color: #e94560; }
+button { width: 100%; padding: 14px; margin-top: 12px; background: #e94560; color: #fff; border: none; border-radius: 8px; font-size: 17px; cursor: pointer; }
+button:disabled { background: #555; }
+.status { margin-top: 12px; padding: 10px; border-radius: 6px; display: none; font-size: 14px; }
+.ok { background: #1b4332; display: block; }
+.err { background: #5c1a1a; display: block; }
+.setup { margin-bottom: 20px; }
+.setup input { width: 100%; padding: 10px; background: #16213e; color: #eee; border: 1px solid #333; border-radius: 6px; font-size: 14px; margin-top: 6px; }
+.setup label { font-size: 13px; color: #aaa; }
+.setup button { background: #0f3460; font-size: 14px; padding: 10px; }
+</style>
+</head>
+<body>
+
+<div id="setup" class="setup">
+  <label>首次使用，粘贴你的 GitHub Token：</label>
+  <input type="password" id="tokenInput" placeholder="ghp_xxxx 或 github_pat_xxxx">
+  <button onclick="saveToken()">保存</button>
+</div>
+
+<div id="main" style="display:none">
+  <h1>灵感捕捉</h1>
+  <textarea id="content" placeholder="说点什么..." autofocus></textarea>
+  <button id="btn" onclick="submit()">发射</button>
+  <div id="status" class="status"></div>
+</div>
+
+<script>
+const REPO = 'panda-three/memory-work';
+const FOLDER = 'zh-CN/07 收件箱';
+
+function init() {
+  const token = localStorage.getItem('gh_token');
+  if (token) {
+    document.getElementById('setup').style.display = 'none';
+    document.getElementById('main').style.display = 'block';
+  }
+}
+
+function saveToken() {
+  const t = document.getElementById('tokenInput').value.trim();
+  if (!t) return;
+  localStorage.setItem('gh_token', t);
+  init();
+}
+
+function pad(n) { return String(n).padStart(2, '0'); }
+
+function getFilename() {
+  const d = new Date();
+  return 'inbox-' + d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate()) + '-' + pad(d.getHours()) + pad(d.getMinutes()) + pad(d.getSeconds()) + '.md';
+}
+
+async function submit() {
+  const btn = document.getElementById('btn');
+  const status = document.getElementById('status');
+  const text = document.getElementById('content').value.trim();
+  if (!text) return;
+
+  btn.disabled = true;
+  btn.textContent = '发送中...';
+  status.className = 'status';
+
+  const token = localStorage.getItem('gh_token');
+  const filename = getFilename();
+  const body = JSON.stringify({
+    message: 'inbox: ' + filename,
+    content: btoa(unescape(encodeURIComponent(text)))
+  });
+
+  try {
+    const res = await fetch(
+      'https://api.github.com/repos/' + REPO + '/contents/' + encodeURIComponent(FOLDER) + '/' + filename,
+      {
+        method: 'PUT',
+        headers: {
+          'Authorization': 'Bearer ' + token,
+          'Accept': 'application/vnd.github+json',
+          'Content-Type': 'application/json'
+        },
+        body: body
+      }
+    );
+    if (res.ok) {
+      status.textContent = '已保存';
+      status.className = 'status ok';
+      document.getElementById('content').value = '';
+    } else {
+      const err = await res.json();
+      status.textContent = '失败: ' + (err.message || res.status);
+      status.className = 'status err';
+      if (res.status === 401) {
+        localStorage.removeItem('gh_token');
+        status.textContent += ' (Token 无效，刷新页面重新输入)';
+      }
+    }
+  } catch (e) {
+    status.textContent = '网络错误: ' + e.message;
+    status.className = 'status err';
+  }
+  btn.disabled = false;
+  btn.textContent = '发射';
+}
+
+init();
+</script>
+</body>
+</html>

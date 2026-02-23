@@ -1,4 +1,9 @@
 # CLAUDE.md
+
+> **⚠️ 工作目录已迁移至 `zh-CN/`**
+> 本文件为英文模板，不再作为主工作入口。请使用 `zh-CN/CLAUDE.md` 作为系统入口。
+> 所有活跃的知识库文件（USER.md、_本周.md、收件箱等）均已迁移至 zh-CN/ 目录。
+
 Personal Agent System Entry Point. Auto-injected by Cowork each session.
 
 ---

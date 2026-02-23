@@ -1,274 +1,165 @@
 ---
 title: MEMORY.md
-type: long-term-memory
+type: system-instruction
+priority: 1
+description: 长期记忆存储——动态记忆（Layer 2）与程序性记忆（Layer 3）合并管理。
 version: 1.0
-priority: 0
-description: |
-  Long-term memory system managing Layer 2 (Dynamic Memory) and Layer 3 (Procedural Memory).
-  Layer 2 preserves insights, decisions, and preferences that evolve across sessions.
-  Layer 3 captures situation→action patterns extracted from repeated behavior.
-  Strength-driven decay and graduated promotion to USER.md ensure relevance.
 created: 2026-02-19
-last_updated: 2026-02-19
 ---
 
-## Memory Architecture (4-Layer System)
+# MEMORY.md
 
-```
-Layer 0 · Persistent Memory     SOUL.md / USER.md / 关于我/    Rarely changes, identity-level
-Layer 1 · Working Memory        _本周.md                       Append-only, weekly cycle
-Layer 2 · Dynamic Memory        MEMORY.md (THIS FILE)          Has lifecycle, cross-week retention
-Layer 3 · Procedural Memory     MEMORY.md (THIS FILE)          Situation→Action patterns
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Running Log                      MEMORY_LOG.md                  Memory system's own state
-```
+长期记忆存储。包含跨周保留的洞见（动态记忆）和情境→行动模式（程序性记忆）。
 
 ---
 
-## Write Protocol: Surprise-Driven Memory
+## 写入协议
 
-### Trigger Conditions (What's Worth Remembering)
+### 谁来写
 
-**HIGH SURPRISE → Record:**
-- ①  Corrects existing knowledge ("I thought X, but turns out Y")
-- ②  Fills a gap in existing map ("Never noticed this before")
-- ③  Stable pattern emerges (observed 2+ times consistently)
+- **AI** 在以下场景提议写入：执行模式中发现高惊奇信号（后台标记）、复盘模式中批量扫描提取
+- **用户** 可随时手动添加或修改条目
 
-**LOW SURPRISE → Don't record:**
-- Confirms already-known information
-- One-time tactical task completion
-- Pure operational progress (e.g., "completed item X on list")
+### 写入流程
 
-### Write Flow
+1. AI 发现值得记录的信号
+2. 用自然语言向用户描述发现
+3. 用户确认后，AI 写入对应区块
+4. 在 MEMORY_LOG.md 记录本次写入操作
 
-1. **AI proposes** (in context of current conversation):
-   - State the surprise source: "I noticed you consistently X when Y—worth remembering?"
-   - Explain what updates existing knowledge
-   - Use natural language, no layer numbers
+### 强度标记
 
-2. **User confirms** or refines:
-   - Yes/clarify/skip
-   - User can expand or correct the framing
+| 符号 | 含义 | 证据要求 |
+|------|------|----------|
+| ★ | 初始观察 | 单次行为或明确陈述 |
+| ★★ | 重复验证 | 2-3 次一致行为 |
+| ★★★ | 稳定模式 | 多次跨情境验证，可考虑毕业到 USER.md |
 
-3. **AI writes** to appropriate layer:
-   - Layer 2 (dynamic insights) for decisions, preferences, cross-week patterns
-   - Layer 3 (procedural) for repeatable situation→action sequences
-   - Never Layer 0 (USER.md) without explicit weekly review
+### 衰减规则
 
----
-
-## Entry Format Template
-
-All entries follow this structure for consistency:
-
-```
-### [Date] [Topic]
-- **context**: #tag1 #tag2 #tag3
-- **surprise**: Why worth remembering — what knowledge was updated or gap filled
-- **strength**: ★☆☆ new / ★★☆ verified / ★★★ core
-- **last_activated**: YYYY-MM-DD
-- **source**: week-id or event-name
-> Memory content in narrative or bullet form
-```
-
-**Field Guide:**
-- `context`: Searchable tags linking to related entries, areas, or themes
-- `surprise`: The delta between prior knowledge and this insight (concise)
-- `strength`: See "Strength Rules" below
-- `last_activated`: When this memory was actually used or referenced
-- `source`: Traceability to original context (week, conversation, project)
+- 未被引用的条目每 4 周降一级强度
+- ★ 级条目降至无星后，下次复盘时决定保留或清除
+- 被主动引用的条目重置衰减计时器
+- 标注 `graduated` 的条目不参与衰减
 
 ---
 
-## Strength Rules & Lifecycle
+## 动态记忆（Layer 2）
 
-| ★☆☆ | New entry, single observation, not yet verified |
-|-----|------|
-| ★★☆ | Verified in later conversations, pattern consistent |
-| ★★★ | Confirmed by user in weekly review, core stable trait |
+跨周保留的洞见、偏好和决策。这些是关于用户「怎么想」和「在意什么」的记忆。
 
-### Strength Transitions
+### 条目格式
 
-- **★☆☆ → ★★☆**: Verified in a separate conversation later
-- **★★☆ → ★★★**: User confirms in weekly review (memory-review)
-- **★★★ → ★★☆**: User marks as situational, not permanent
-- **Decay**: 4 weeks without activation → drop one level
-- **Archive**: ★☆☆ + 4 weeks inactive → move to archive section or delete
+```
+### [简短标题]
+- **强度**：★★
+- **发现日期**：YYYY-MM-DD
+- **证据**：[具体行为或对话记录的简述]
+- **related**：[关联的程序性记忆条目，如有]
+- **备注**：[补充说明，如适用场景、例外情况]
+```
 
-### Graduation to USER.md (Layer 0)
+> `related` 字段用于建立动态记忆与程序性记忆之间的交叉引用。一个洞见可能关联多个行动模式，反之亦然。
 
-Entry becomes USER.md candidate when:
-- Strength = ★★★ + confirmed in weekly review + stable trait (not situational)
-- Represents core identity, not episodic
-- Once graduated: mark original with `[graduated]`, stop decay checks
+### 当前条目
+
+> 初始化时此区块为空。以下为示例条目，实际使用时替换：
+
+### [示例] 决策偏好：先做再想
+- **强度**：★★
+- **发现日期**：2026-02-20
+- **证据**：两次面对新项目时，用户选择先出粗糙原型再讨论方向，而非先做规划
+- **related**：→ 程序性「阻塞处理偏好」（同一决策风格的不同表现）
+- **备注**：在高不确定性场景下尤为明显；确定性高的任务则会先规划
+
+### [示例] 写作习惯：迭代式打磨
+- **强度**：★
+- **发现日期**：2026-02-21
+- **证据**：一次观察到用户对同一份文档反复修改 4 次才定稿
+- **related**：—
+- **备注**：待更多证据确认是否为稳定模式
 
 ---
 
-## Layer 2: Dynamic Memory (Insights, Decisions, Preferences)
+## 程序性记忆（Layer 3）
 
-Decisions, preferences, and cross-session insights that evolve as the user grows or changes priorities.
+情境→行动的模式匹配。当特定情境出现时，AI 按照已确认的模式行动。
 
-### Decisions & Judgments
-
-Memorable decisions about priorities, methodologies, or strategic choices that shaped work.
-
-**Example Entry:**
+### 条目格式
 
 ```
-### 2026-02-14 Presentation-First Methodology
-- **context**: #methodology #presentations #decision-making
-- **surprise**: User explicitly chooses to design presentation structure before deep content research—inverts typical "research then present" order; signals confidence in framing
-- **strength**: ★★☆
-- **last_activated**: 2026-02-18
-- **source**: talk-prep-week-1
-
-> When preparing talks or pitches, user maps the narrative arc and slide structure *before* diving into research. Rationale: structure clarifies what knowledge is needed, avoids research rabbit-holes. Reverses decision-paralysis by committing to a skeleton early.
+### [模式名称]
+- **强度**：★★
+- **触发情境**：[什么条件下触发]
+- **行动模式**：[AI 应该怎么做]
+- **发现日期**：YYYY-MM-DD
+- **related**：[关联的动态记忆条目，如有]
+- **证据**：[发现这个模式的具体场景]
 ```
+
+### 当前条目
+
+> 初始化时此区块为空。以下为示例条目，实际使用时替换：
+
+### [示例] 文件命名习惯
+- **强度**：★★
+- **触发情境**：创建新文档时
+- **行动模式**：使用「日期_项目名_版本」格式，如 `0220_产品方案_v2`
+- **发现日期**：2026-02-20
+- **related**：—
+- **证据**：三次文件创建中，用户都手动改为此格式
+
+### [示例] 阻塞处理偏好
+- **强度**：★
+- **触发情境**：任务遇到外部依赖阻塞时
+- **行动模式**：先跳到其他任务继续推进，不等待阻塞解除
+- **发现日期**：2026-02-22
+- **related**：→ 动态「决策偏好：先做再想」（同一决策风格的行动表现）
+- **证据**：一次项目评审被推迟时，用户立即切换到另一个项目的设计工作
 
 ---
 
-### Preferences & Patterns
+## 别名对照表
 
-Personal preferences in workflow, communication style, tool use, and interaction patterns.
+记录用户对同一事物的不同称呼，帮助 AI 准确理解指代。
 
-**Example Entry:**
+| 用户说法 | 实际指代 | 场景 |
+|----------|----------|------|
+| [示例：「那个方案」] | [如：XX 项目产品方案 v3] | [最近讨论中] |
 
-```
-### 2026-02-10 Asynchronous Feedback Preference
-- **context**: #communication #preference #workflow
-- **surprise**: User prefers to receive detailed feedback in written form, not real-time chat—allows thinking time and reduces interruption
-- **strength**: ★★☆
-- **last_activated**: 2026-02-15
-- **source**: feedback-session-week-3
-
-> When giving feedback or suggestions, batch into coherent written summaries rather than incremental chat. User processes more effectively when she can review, annotate, and respond on her timeline. Exception: urgent blockers still warrant immediate notification.
-```
+> 此表由 AI 在对话中自动积累，用户可修正。
 
 ---
 
-### Project Milestones
+## 毕业记录
 
-Significant achievements, pivots, or decision points in ongoing projects.
+从 MEMORY.md 毕业到 USER.md 的条目存档：
 
-**Example Entry:**
-
-```
-### 2026-01-28 Project X: Scope Redefinition
-- **context**: #project-x #milestone #scope
-- **surprise**: User explicitly narrowed project scope from 5 phases to 3—signals shift from "completionist" to "ship valuable core first"
-- **strength**: ★★★
-- **last_activated**: 2026-02-12
-- **source**: project-kickoff-week-2
-
-> Moved from "build full platform" to "MVP with core 3 features." Rationale: faster feedback loop, learn from real users early. Reflects matured thinking about diminishing returns of over-preparation.
-```
+| 原条目 | 毕业日期 | 写入位置 | 确认方式 |
+|--------|----------|----------|----------|
+| [暂无] | — | — | — |
 
 ---
 
-### Alias & Entity Mapping
+## 使用说明
 
-Oral names, nicknames, or shorthand → formal entity names. Purely reference layer for disambiguation.
+### 这个文件怎么用
 
-**Format:**
-```
-### [Informal Name] → [Formal Name]
-- **context**: #naming #reference
-- **aliases**: [alternate spellings or nicknames]
-- **domain**: [project/product/person/tool]
+- **AI 读取**：启动时按需检索，不全量加载。根据当前对话情境匹配相关条目。
+- **AI 写入**：发现新模式时提议，经用户确认后写入。
+- **用户修改**：随时可以直接编辑、删除或调整条目。
+- **周复盘**：memory-review 技能会系统性地扫描和更新此文件。
 
-> Short description of why this mapping exists or what distinguishes it
-```
+### 与其他文件的关系
 
-**Example (Template):**
-```
-### "Feature X" → "Advanced User Onboarding Module"
-- **context**: #project-name #terminology
-- **aliases**: "AUO Module", "onboarding flow v2"
-- **domain**: product-platform
-
-> Shorthand used in team conversations; formal name for docs and specifications.
-```
+- `USER.md`：MEMORY.md 中 ★★★ 级稳定条目的毕业目的地
+- `_本周.md`：仅与本周相关的记忆留在周文件中，不进入 MEMORY.md
+- `MEMORY_LOG.md`：记录对 MEMORY.md 的每次读写操作
 
 ---
 
-## Layer 3: Procedural Memory (Situation→Action Patterns)
+## 版本记录
 
-Repeatable patterns extracted from observed behavior. Each pattern requires 2+ evidence instances and describes the trigger, sequence, and exceptions.
-
-### Entry Format
-
-```
-### [Pattern Name]
-- **trigger**: What situation activates this pattern
-- **pattern**: Ordered action sequence
-- **evidence**: Real events/sessions where this pattern was observed (with dates or week refs)
-- **exception**: Known situations where pattern breaks or needs modification
-- **confidence**: low / medium / high
-```
-
----
-
-### Pattern 1: Weekly Startup Ritual
-
-```
-### Weekly Startup Ritual
-- **trigger**: Start of work week (Monday morning or session after weekend)
-- **pattern**:
-  1. User articulates top 3 priorities for the week
-  2. AI breaks priorities into smaller 1–2 day chunks
-  3. AI searches relevant project memory (existing docs, MEMORY, prior work)
-  4. AI proposes execution sequence (dependencies, blockers)
-  5. User confirms or adjusts sequence
-  6. AI schedules deep-work blocks; creates _本周.md if missing
-- **evidence**:
-  - Week 1 (2026-01-20 session): startup-check → priority-articulation → scheduling
-  - Week 3 (2026-02-03 session): monday-morning-kickoff → same ritual completed
-- **exception**:
-  - If user arrives with pre-written _本周.md, skip step 1 (priorities already locked)
-  - If user is in reactive mode (many urgent requests), compress to verbal sync only
-- **confidence**: high
-```
-
----
-
-### Pattern 2: End-of-Week Archive & Review
-
-```
-### End-of-Week Archive & Review
-- **trigger**: End of work week (Thursday evening or Friday) OR explicit "let's wrap up" signal
-- **pattern**:
-  1. AI scans 00 专注区/ for all modified files (vs. start-of-week snapshot)
-  2. AI asks user: "Ship these files?" (list names + brief purpose)
-  3. User confirms or marks for archive
-  4. AI moves confirmed files to 归档/ with week-tagged folder
-  5. AI lists new procedural insights or surprises found during week
-  6. AI proposes updates to MEMORY.md and _本周.md
-  7. User confirms memory entries
-  8. AI writes MEMORY_LOG entry for the session
-  9. AI creates fresh _本周.md for next week
-- **evidence**:
-  - Week 2 (2026-01-27 session): end-of-week-sweep → 8 files archived → 3 memory entries recorded
-  - Week 4 (2026-02-10 session): friday-closeout → same ritual, 5 files archived
-- **exception**:
-  - If archive folder is full (20+ items), prompt for deeper cleanup before archiving new week
-  - If user is running projects in parallel, segment archives by project tag
-- **confidence**: high
-```
-
----
-
-## Version Record
-
-| Version | Date | Changes | Status |
-|---------|------|---------|--------|
-| 1.0 | 2026-02-19 | Initial template with Layer 2 & Layer 3 structure, example entries, lifecycle rules | Active |
-
----
-
-## Internal Notes (Not for User)
-
-- This is a **desensitized template**. All example entries use generic scenarios to illustrate structure.
-- To activate: Copy this template to your actual workspace, remove example entries, and begin recording surprises in real sessions.
-- Layer 2 ↔ Layer 3 distinction: Layer 2 is *what you know*; Layer 3 is *how you work*.
-- Strength decay is checked during weekly review (memory-review skill), not continuously.
-- Graduated entries (→ USER.md) are marked `[graduated]` but remain visible here for 2 weeks before archiving for audit purposes.
+| 日期 | 变更 | 原因 |
+|------|------|------|
+| 2026-02-19 | 模板创建（Layer 2 + 3 合并） | 系统初始化 |

@@ -80,7 +80,7 @@ When adding a new skill:
 
 1. Create the skill folder:
    ```
-   06 Skills/new-skill-name/
+   06 我的工具/new-skill-name/
    ├── SKILL.md
    ├── scripts/
    │   └── [executable files]

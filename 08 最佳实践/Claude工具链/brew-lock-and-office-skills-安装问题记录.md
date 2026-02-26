@@ -3,8 +3,8 @@ title: "⚠️ 未解决：Claude Code 中读取 PDF/docx 的工具链问题"
 domain: Claude工具链
 source: 自己摸索
 verified: false
-created: 2026-02-26
 status: 未解决
+created: 2026-02-26
 tags: [brew, poppler, libreoffice, claude-office-skills, macOS-12]
 ---
 

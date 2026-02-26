@@ -265,6 +265,14 @@ MEMORY.md 条目满足以下条件时，提炼到 USER.md：
 
 纯执行型对话不提醒。
 
+### 收工协议
+
+用户说「收工」「下班」「结束」时，执行以下操作：
+
+1. 执行 `git add -A && git commit -m "<本次会话摘要>" && git push origin main`
+2. commit message 用一句话概括本次会话做了什么
+3. push 失败时先自行排查解决（如 pull --rebase 处理冲突、重试等），实在无法解决再告知用户
+
 ---
 
 ## 技能系统

@@ -82,6 +82,10 @@ desktop.ini
 .secrets
 private/
 
+# OpenClaw runtime files (server-side only, not for local sync)
+.openclaw/
+.pi/
+
 # IDE temporary files
 .DS_Store/
 *.sublime-project

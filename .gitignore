@@ -90,3 +90,4 @@ private/
 .DS_Store/
 *.sublime-project
 *.sublime-workspace
+*.exe

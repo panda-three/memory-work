@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C语言函数 - 教学逐字稿</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+            line-height: 1.8;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 3px solid #3498db;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+        }
+
+        h2 {
+            color: #e74c3c;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            padding-left: 15px;
+            border-left: 5px solid #e74c3c;
+            font-size: 1.6em;
+        }
+
+        h3 {
+            color: #3498db;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        p {
+            margin-bottom: 15px;
+            text-indent: 2em;
+            color: #34495e;
+            font-size: 1.05em;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, #ffd89b 0%, #19547b 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .key-point {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .key-point strong {
+            color: #e74c3c;
+            font-size: 1.1em;
+        }
+
+        .important {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .code-example {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: 'Consolas', 'Monaco', monospace;
+            overflow-x: auto;
+        }
+
+        .analogy {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .question {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .question strong {
+            color: #dc3545;
+        }
+
+        ul, ol {
+            margin-left: 40px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 10px;
+            color: #34495e;
+        }
+
+        .execution-flow {
+            background: #fff;
+            border: 2px dashed #3498db;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .homework {
+            background: #e8f5e9;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 8px;
+            border: 2px solid #4caf50;
+        }
+
+        .homework h3 {
+            color: #2e7d32;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>C语言 - 函数基础教学</h1>
+
+        <h2>一、课程回顾</h2>
+        <p>你好,我们今天开始讲函数。在函数之前我们回顾一下前面讲的是<span class="highlight">循环</span>,循环贯穿我们整个课程的始终,后面的内容都会用到循环。</p>
+
+        <div class="analogy">
+            <h3>生活类比:挖掘机的组装</h3>
+            <p>一台挖掘机买家是散装发货的,大家看完这个视频有一个什么感受?就是这个挖掘机当中,<strong>每一个部分都是可拆卸的</strong>,对不对?每一个部分的功能都是独立的,拼起来组合成一个整体。</p>
+            <p><strong>函数也是一样!</strong></p>
+        </div>
+
+        <h2>二、今日目标</h2>
+        <div class="important">
+            <ol>
+                <li><strong>函数概念</strong></li>
+                <li><strong>函数最基本的定义格式</strong></li>
+                <li><strong>函数的调用</strong></li>
+            </ol>
+        </div>
+
+        <h2>三、函数的概念</h2>
+
+        <div class="key-point">
+            <strong>核心定义:</strong> 函数就是<span class="highlight">程序中独立的功能</span>
+        </div>
+
+        <h3>为什么需要函数?</h3>
+        <p>为了方便大家理解,我们从一个挖掘机的使用工作流程来讲解。</p>
+
+        <div class="analogy">
+            <h4>场景一:挖掘机的基本工作流程</h4>
+            <p>挖掘机从启动到熄火,经历这样的流程:</p>
+            <ol>
+                <li>挖机启动</li>
+                <li>挖机开始工作</li>
+                <li>挖机工作完成</li>
+                <li>挖机熄火</li>
+            </ol>
+        </div>
+
+        <div class="question">
+            <strong>思考问题:</strong> 如果我现在上个厕所,或者说挖掘机又有一个新的任务,怎么办呢?
+        </div>
+
+        <p>那代码就变成这个样子了:</p>
+        <div class="code-example">
+挖机启动<br>
+挖机开始工作<br>
+挖机工作完成<br>
+挖机熄火<br>
+<br>
+// 上厕所,需要关掉挖掘机<br>
+<br>
+挖机启动<br>
+挖机开始工作<br>
+挖机工作完成<br>
+挖机熄火<br>
+<br>
+// 如果再去上厕所呢?又要重复一遍!
+        </div>
+
+        <div class="key-point">
+            <strong>问题发现:</strong> 这一段代码在<span class="highlight">重复地写、重复地写</span>!
+        </div>
+
+        <h2>四、函数的解决方案</h2>
+
+        <div class="important">
+            <p><strong>核心思想:</strong> 我们可以将这四句代码<span class="highlight">打包成一个整体</span>,给它起个名字,叫做 <code>goWork</code></p>
+            <p>在使用的时候,我只要写这个名字即可!</p>
+        </div>
+
+        <h3>代码演示</h3>
+
+        <p>我把这几句话打包,起个名字叫 goWork。注意,<strong>这个名字你可以随便起</strong>。</p>
+
+        <div class="code-example">
+// 函数定义 - 把挖掘机从启动到熄火的整个流程打包<br>
+void goWork() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;printf("挖机启动\n");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;printf("挖机开始工作\n");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;printf("挖机工作完成\n");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;printf("挖机熄火\n");<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return 0;<br>
+}<br>
+<br>
+// 使用函数<br>
+int main() {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;goWork();  // 调用函数<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// 上厕所...<br>
+&nbsp;&nbsp;&nbsp;&nbsp;goWork();  // 再次调用,不需要重复写代码!<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return 0;<br>
+}
+        </div>
+
+        <div class="key-point">
+            <strong>重点理解:</strong><br>
+            1. 把某一段代码打包起来,这个就叫做<span class="highlight">函数</span><br>
+            2. 这个功能是独立的,想使用就调用它<br>
+            3. <strong>函数跟数学上面的函数不太一样!</strong>
+        </div>
+
+        <h2>五、函数的执行流程</h2>
+
+        <div class="execution-flow">
+            <h3>代码执行顺序:</h3>
+            <ol>
+                <li>先执行 <code>main</code> 函数里面的第一行代码</li>
+                <li>看到 <code>goWork()</code>,是一个函数调用,就会<strong>跳到这个函数里面去执行</strong></li>
+                <li>在 <code>goWork</code> 函数里面<strong>从上往下执行</strong>所有语句</li>
+                <li>执行完毕后,<strong>返回到 main 函数</strong>,继续执行下一行代码</li>
+                <li>如果又遇到 <code>goWork()</code>,再次跳转执行...</li>
+            </ol>
+        </div>
+
+        <h2>六、函数的分类</h2>
+
+        <div class="important">
+            <h3>1. 系统定义好的函数(库函数)</h3>
+            <p>比如 <code>printf()</code>、<code>scanf()</code> 都是函数!</p>
+            <ul>
+                <li><code>printf</code> - 输出功能,是一个独立的功能</li>
+                <li><code>scanf</code> - 输入功能,也是一个独立的功能</li>
+            </ul>
+            <p><strong>验证方法:</strong> 在代码中按住 <kbd>Ctrl</kbd> 键点击函数名,可以看到这个函数的定义!</p>
+        </div>
+
+        <div class="important">
+            <h3>2. 自定义函数</h3>
+            <p>就是我们刚刚自己写的 <code>goWork</code>,不是系统自带的,是我们自己定义的!</p>
+        </div>
+
+        <h2>七、重要概念总结</h2>
+
+        <div class="key-point">
+            <strong>main 也是一个函数!</strong><br>
+            它是程序的入口函数,所有程序都从 main 函数开始执行。
+        </div>
+
+        <div class="key-point">
+            <strong>函数的基本形式:</strong><br>
+            <div class="code-example">
+返回类型 函数名(参数) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;// 函数体 - 具体的功能代码<br>
+&nbsp;&nbsp;&nbsp;&nbsp;return 返回值;<br>
+}
+            </div>
+        </div>
+
+        <div class="homework">
+            <h3>课后作业</h3>
+            <ol>
+                <li>描述自己学习C语言的过程,首先学习了哪些函数?描述自己学习函数的过程。</li>
+                <li>定义一个函数,求两数之和。</li>
+            </ol>
+        </div>
+
+        <div style="margin-top: 40px; padding-top: 20px; border-top: 2px solid #eee; text-align: center; color: #999;">
+            <p>给大家 3-5 分钟时间复习消化,重点在于理解函数的概念!</p>
+            <p style="font-weight: bold; color: #e74c3c; margin-top: 15px;">记住:函数就是把独立的功能打包起来!</p>
+        </div>
+    </div>
+</body>
+</html>

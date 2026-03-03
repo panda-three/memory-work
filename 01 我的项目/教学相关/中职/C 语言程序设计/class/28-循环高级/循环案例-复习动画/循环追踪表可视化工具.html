@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>循环追踪表可视化工具 - 让循环"看得见"</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.2em;
+        }
+
+        .example-section {
+            margin-bottom: 40px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+        }
+
+        .example-title {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .example-number {
+            background: #667eea;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-family: "Consolas", "Monaco", monospace;
+            font-size: 1.1em;
+            line-height: 1.6;
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .code-line {
+            display: block;
+            padding: 2px 0;
+        }
+
+        .code-comment {
+            color: #75715e;
+        }
+
+        .code-keyword {
+            color: #f92672;
+        }
+
+        .code-function {
+            color: #66d9ef;
+        }
+
+        .code-string {
+            color: #e6db74;
+        }
+
+        .code-number {
+            color: #ae81ff;
+        }
+
+        .trace-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            background: white;
+        }
+
+        .trace-table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+
+        .trace-table td {
+            padding: 12px 15px;
+            text-align: center;
+            border: 1px solid #ddd;
+            font-size: 1.05em;
+        }
+
+        .trace-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .trace-table tr:hover {
+            background: #e3f2fd;
+            transform: scale(1.02);
+            transition: all 0.3s;
+        }
+
+        .highlight-row {
+            background: #fff3cd !important;
+            border: 2px solid #ffc107;
+            font-weight: bold;
+        }
+
+        .step-indicator {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .life-example {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            font-size: 1.1em;
+            line-height: 1.8;
+        }
+
+        .life-example-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .life-example-title::before {
+            content: "💡";
+            font-size: 1.5em;
+            margin-right: 10px;
+        }
+
+        .key-point {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+
+        .key-point strong {
+            color: #f57c00;
+        }
+
+        .interactive-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin: 10px 5px;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .interactive-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .visual-flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .flow-box {
+            background: white;
+            border: 3px solid #667eea;
+            padding: 15px 25px;
+            border-radius: 10px;
+            margin: 10px;
+            font-weight: bold;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .flow-arrow {
+            font-size: 2em;
+            color: #667eea;
+            margin: 0 10px;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .current-step {
+            animation: pulse 1s infinite;
+            background: #ffc107;
+            border-color: #f57c00;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔄 循环追踪表可视化工具</h1>
+        <p class="subtitle">让循环变得"看得见、摸得着"</p>
+
+        <!-- 例1: 打印1-5 -->
+        <div class="example-section">
+            <div class="example-title">
+                <span class="example-number">1</span>
+                打印1-5（最简单的for循环）
+            </div>
+
+            <div class="life-example">
+                <div class="life-example-title">生活类比</div>
+                就像你在操场上跑步：
+                <br>• <strong>开始</strong>：从第1圈开始（i=1）
+                <br>• <strong>继续条件</strong>：只要没跑到第5圈就继续跑（i<=5）
+                <br>• <strong>每圈做的事</strong>：喊一声"我跑了第X圈！"（printf）
+                <br>• <strong>下一圈</strong>：圈数+1（i++）
+            </div>
+
+            <div class="code-block">
+<span class="code-comment">// 目标：打印数字 1 2 3 4 5</span>
+<span class="code-line"><span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i &lt;= <span class="code-number">5</span>; i++) {</span>
+<span class="code-line">    <span class="code-function">printf</span>(<span class="code-string">"%d "</span>, i);  <span class="code-comment">// 打印当前的i</span></span>
+<span class="code-line">}</span>
+            </div>
+
+            <div class="key-point">
+                <strong>关键问题：</strong>循环会执行几次？每次i的值是多少？
+            </div>
+
+            <table class="trace-table">
+                <thead>
+                    <tr>
+                        <th>执行次数</th>
+                        <th>循环变量 i</th>
+                        <th>条件判断 (i≤5)</th>
+                        <th>执行动作</th>
+                        <th>输出结果</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>初始化</td>
+                        <td style="background: #e3f2fd; font-weight: bold;">i = 1</td>
+                        <td>-</td>
+                        <td>给i赋值为1</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>第1次</td>
+                        <td>1</td>
+                        <td style="color: green; font-weight: bold;">✓ 真（1≤5）</td>
+                        <td>printf("%d ", 1)</td>
+                        <td style="background: #c8e6c9;">1</td>
+                    </tr>
+                    <tr>
+                        <td>第2次</td>
+                        <td>2</td>
+                        <td style="color: green; font-weight: bold;">✓ 真（2≤5）</td>
+                        <td>printf("%d ", 2)</td>
+                        <td style="background: #c8e6c9;">2</td>
+                    </tr>
+                    <tr>
+                        <td>第3次</td>
+                        <td>3</td>
+                        <td style="color: green; font-weight: bold;">✓ 真（3≤5）</td>
+                        <td>printf("%d ", 3)</td>
+                        <td style="background: #c8e6c9;">3</td>
+                    </tr>
+                    <tr>
+                        <td>第4次</td>
+                        <td>4</td>
+                        <td style="color: green; font-weight: bold;">✓ 真（4≤5）</td>
+                        <td>printf("%d ", 4)</td>
+                        <td style="background: #c8e6c9;">4</td>
+                    </tr>
+                    <tr>
+                        <td>第5次</td>
+                        <td>5</td>
+                        <td style="color: green; font-weight: bold;">✓ 真（5≤5）</td>
+                        <td>printf("%d ", 5)</td>
+                        <td style="background: #c8e6c9;">5</td>
+                    </tr>
+                    <tr>
+                        <td>第6次</td>
+                        <td style="background: #ffcdd2;">6</td>
+                        <td style="color: red; font-weight: bold;">✗ 假（6≤5）</td>
+                        <td style="background: #ffcdd2;">循环结束！</td>
+                        <td>-</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="key-point">
+                <strong>总结：</strong>循环执行了<span style="color: red; font-size: 1.3em;">5次</span>，输出：<strong>1 2 3 4 5</strong>
+            </div>
+        </div>
+
+        <!-- 例2: 求1-5的和 -->
+        <div class="example-section">
+            <div class="example-title">
+                <span class="example-number">2</span>
+                求1-5的和（累加问题）
+            </div>
+
+            <div class="life-example">
+                <div class="life-example-title">生活类比</div>
+                就像你在存钱罐里攒钱：
+                <br>• <strong>存钱罐</strong>：sum变量（开始是空的，sum=0）
+                <br>• <strong>每天</strong>：往里面放i元钱（sum = sum + i）
+                <br>• <strong>第1天</strong>：放1元，存钱罐有1元
+                <br>• <strong>第2天</strong>：放2元，存钱罐有3元
+                <br>• <strong>第3天</strong>：放3元，存钱罐有6元
+                <br>• ...以此类推
+            </div>
+
+            <div class="code-block">
+<span class="code-comment">// 目标：计算 1+2+3+4+5 的和</span>
+<span class="code-line"><span class="code-keyword">int</span> sum = <span class="code-number">0</span>;  <span class="code-comment">// 存钱罐（开始是空的）</span></span>
+<span class="code-line"><span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i &lt;= <span class="code-number">5</span>; i++) {</span>
+<span class="code-line">    sum = sum + i;  <span class="code-comment">// 把当前的i加到sum里</span></span>
+<span class="code-line">}</span>
+<span class="code-line"><span class="code-function">printf</span>(<span class="code-string">"1+2+3+4+5 = %d\n"</span>, sum);</span>
+            </div>
+
+            <table class="trace-table">
+                <thead>
+                    <tr>
+                        <th>执行次数</th>
+                        <th>循环变量 i</th>
+                        <th>sum的旧值</th>
+                        <th>执行 sum=sum+i</th>
+                        <th>sum的新值</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>初始化</td>
+                        <td>-</td>
+                        <td style="background: #e3f2fd; font-weight: bold;">0</td>
+                        <td>-</td>
+                        <td style="background: #e3f2fd; font-weight: bold;">0</td>
+                    </tr>
+                    <tr>
+                        <td>第1次</td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>sum = 0 + 1</td>
+                        <td style="background: #c8e6c9; font-weight: bold;">1</td>
+                    </tr>
+                    <tr>
+                        <td>第2次</td>
+                        <td>2</td>
+                        <td>1</td>
+                        <td>sum = 1 + 2</td>
+                        <td style="background: #c8e6c9; font-weight: bold;">3</td>
+                    </tr>
+                    <tr>
+                        <td>第3次</td>
+                        <td>3</td>
+                        <td>3</td>
+                        <td>sum = 3 + 3</td>
+                        <td style="background: #c8e6c9; font-weight: bold;">6</td>
+                    </tr>
+                    <tr>
+                        <td>第4次</td>
+                        <td>4</td>
+                        <td>6</td>
+                        <td>sum = 6 + 4</td>
+                        <td style="background: #c8e6c9; font-weight: bold;">10</td>
+                    </tr>
+                    <tr>
+                        <td>第5次</td>
+                        <td>5</td>
+                        <td>10</td>
+                        <td>sum = 10 + 5</td>
+                        <td style="background: #ffeb3b; font-weight: bold; font-size: 1.2em;">15</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="key-point">
+                <strong>总结：</strong>最终sum = <span style="color: red; font-size: 1.5em;">15</span>
+                <br><strong>核心思想：</strong>每次循环都把当前的i"攒"到sum里
+            </div>
+        </div>
+
+        <!-- 例3: 统计能被6和8整除的数 -->
+        <div class="example-section">
+            <div class="example-title">
+                <span class="example-number">3</span>
+                统计满足条件的数字（计数问题）
+            </div>
+
+            <div class="life-example">
+                <div class="life-example-title">生活类比</div>
+                就像你在数学考试中数对号：
+                <br>• <strong>试卷</strong>：从第start题到第end题
+                <br>• <strong>计分器</strong>：count变量（开始是0分）
+                <br>• <strong>每道题</strong>：检查是否同时被6和8整除
+                <br>• <strong>答对了</strong>：计分器+1（count++）
+                <br>• <strong>答错了</strong>：跳过，继续下一题
+            </div>
+
+            <div class="code-block">
+<span class="code-comment">// 目标：在范围内找既能被6又能被8整除的数</span>
+<span class="code-line"><span class="code-keyword">int</span> start = <span class="code-number">1</span>, end = <span class="code-number">100</span>;</span>
+<span class="code-line"><span class="code-keyword">int</span> count = <span class="code-number">0</span>;  <span class="code-comment">// 计数器</span></span>
+<span class="code-line"></span>
+<span class="code-line"><span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = start; i &lt;= end; i++) {</span>
+<span class="code-line">    <span class="code-keyword">if</span> (i % <span class="code-number">6</span> == <span class="code-number">0</span> && i % <span class="code-number">8</span> == <span class="code-number">0</span>) {  <span class="code-comment">// 同时满足两个条件</span></span>
+<span class="code-line">        count++;  <span class="code-comment">// 找到一个，计数器+1</span></span>
+<span class="code-line">    }</span>
+<span class="code-line">}</span>
+            </div>
+
+            <div class="key-point">
+                <strong>关键问题：</strong>什么数既能被6整除，又能被8整除？
+                <br><strong>数学知识：</strong>这样的数一定能被6和8的<strong>最小公倍数</strong>整除！
+                <br>• 6 = 2 × 3
+                <br>• 8 = 2 × 2 × 2
+                <br>• 最小公倍数 = 2³ × 3 = <strong>24</strong>
+            </div>
+
+            <table class="trace-table">
+                <thead>
+                    <tr>
+                        <th>循环变量 i</th>
+                        <th>i % 6</th>
+                        <th>i % 8</th>
+                        <th>满足条件？</th>
+                        <th>count值</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1~23</td>
+                        <td colspan="2" style="text-align: center;">不满足条件，跳过...</td>
+                        <td>✗</td>
+                        <td>0</td>
+                    </tr>
+                    <tr style="background: #c8e6c9;">
+                        <td><strong>24</strong></td>
+                        <td style="color: green; font-weight: bold;">0 ✓</td>
+                        <td style="color: green; font-weight: bold;">0 ✓</td>
+                        <td style="font-weight: bold;">✓ 找到了！</td>
+                        <td style="background: #ffeb3b; font-weight: bold;">1</td>
+                    </tr>
+                    <tr>
+                        <td>25~47</td>
+                        <td colspan="2" style="text-align: center;">不满足条件，跳过...</td>
+                        <td>✗</td>
+                        <td>1</td>
+                    </tr>
+                    <tr style="background: #c8e6c9;">
+                        <td><strong>48</strong></td>
+                        <td style="color: green; font-weight: bold;">0 ✓</td>
+                        <td style="color: green; font-weight: bold;">0 ✓</td>
+                        <td style="font-weight: bold;">✓ 找到了！</td>
+                        <td style="background: #ffeb3b; font-weight: bold;">2</td>
+                    </tr>
+                    <tr>
+                        <td>49~71</td>
+                        <td colspan="2" style="text-align: center;">不满足条件，跳过...</td>
+                        <td>✗</td>
+                        <td>2</td>
+                    </tr>
+                    <tr style="background: #c8e6c9;">
+                        <td><strong>72</strong></td>
+                        <td style="color: green; font-weight: bold;">0 ✓</td>
+                        <td style="color: green; font-weight: bold;">0 ✓</td>
+                        <td style="font-weight: bold;">✓ 找到了！</td>
+                        <td style="background: #ffeb3b; font-weight: bold;">3</td>
+                    </tr>
+                    <tr>
+                        <td>73~95</td>
+                        <td colspan="2" style="text-align: center;">不满足条件，跳过...</td>
+                        <td>✗</td>
+                        <td>3</td>
+                    </tr>
+                    <tr style="background: #c8e6c9;">
+                        <td><strong>96</strong></td>
+                        <td style="color: green; font-weight: bold;">0 ✓</td>
+                        <td style="color: green; font-weight: bold;">0 ✓</td>
+                        <td style="font-weight: bold;">✓ 找到了！</td>
+                        <td style="background: #ffeb3b; font-weight: bold;">4</td>
+                    </tr>
+                    <tr>
+                        <td>97~100</td>
+                        <td colspan="2" style="text-align: center;">不满足条件，跳过...</td>
+                        <td>✗</td>
+                        <td>4</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="key-point">
+                <strong>答案：</strong>在1~100之间，有<span style="color: red; font-size: 1.5em;">4个</span>数字满足条件
+                <br><strong>它们是：</strong>24、48、72、96
+                <br><strong>规律：</strong>每隔24就有一个符合条件的数
+            </div>
+        </div>
+
+        <!-- 循环执行流程可视化 -->
+        <div class="example-section">
+            <div class="example-title">
+                <span class="example-number">💡</span>
+                for循环执行流程图解
+            </div>
+
+            <div class="visual-flow">
+                <div class="flow-box" style="background: #e3f2fd;">
+                    <strong>①初始化</strong><br>int i=1<br>（只执行1次）
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box" style="background: #fff3e0;">
+                    <strong>②判断条件</strong><br>i≤5?
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box" style="background: #c8e6c9;">
+                    <strong>③执行循环体</strong><br>printf(...)
+                </div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-box" style="background: #f8bbd0;">
+                    <strong>④更新变量</strong><br>i++
+                </div>
+            </div>
+
+            <div style="text-align: center; margin-top: 20px;">
+                <div class="flow-arrow" style="font-size: 3em; transform: rotate(180deg);">↺</div>
+                <p style="font-size: 1.2em; color: #666; margin-top: 10px;">
+                    执行完④后，回到②再次判断，形成循环
+                </p>
+            </div>
+
+            <div class="key-point" style="margin-top: 30px;">
+                <strong>记忆口诀：</strong>
+                <br>• <strong>初</strong>始化只做一次（i=1）
+                <br>• <strong>判</strong>断条件决定继续还是结束（i≤5?）
+                <br>• 条件为<strong>真</strong>，执行循环体（printf）
+                <br>• <strong>更</strong>新变量（i++）
+                <br>• <strong>回</strong>到判断，重复2-3-4步骤
+            </div>
+        </div>
+
+        <!-- 常见错误 -->
+        <div class="example-section">
+            <div class="example-title">
+                <span class="example-number">⚠️</span>
+                学生常见错误
+            </div>
+
+            <div class="key-point" style="border-color: #f44336; background: #ffebee;">
+                <strong style="color: #c62828;">错误1：死循环</strong>
+                <div class="code-block" style="margin-top: 10px;">
+<span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i &lt;= <span class="code-number">5</span>; ) {  <span class="code-comment">// 忘记写 i++</span>
+    <span class="code-function">printf</span>(<span class="code-string">"%d "</span>, i);
+}  <span class="code-comment">// i永远是1，条件永远为真！</span>
+                </div>
+                <strong>原因：</strong>循环变量没有更新，条件永远成立
+            </div>
+
+            <div class="key-point" style="border-color: #f44336; background: #ffebee;">
+                <strong style="color: #c62828;">错误2：循环一次都不执行</strong>
+                <div class="code-block" style="margin-top: 10px;">
+<span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">5</span>; i &lt; <span class="code-number">1</span>; i++) {  <span class="code-comment">// 5&lt;1? 一开始就是假！</span>
+    <span class="code-function">printf</span>(<span class="code-string">"%d "</span>, i);
+}
+                </div>
+                <strong>原因：</strong>初始值就不满足条件
+            </div>
+
+            <div class="key-point" style="border-color: #f44336; background: #ffebee;">
+                <strong style="color: #c62828;">错误3：多执行或少执行一次</strong>
+                <div class="code-block" style="margin-top: 10px;">
+<span class="code-comment">// 目标：打印1-5</span>
+<span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i &lt; <span class="code-number">5</span>; i++) {  <span class="code-comment">// 应该是 i&lt;=5</span>
+    <span class="code-function">printf</span>(<span class="code-string">"%d "</span>, i);
+}  <span class="code-comment">// 只会打印 1 2 3 4，漏了5！</span>
+                </div>
+                <strong>原因：</strong>条件判断符号用错了（< 和 ≤）
+            </div>
+        </div>
+
+        <!-- 调试技巧 -->
+        <div class="example-section">
+            <div class="example-title">
+                <span class="example-number">🔧</span>
+                调试技巧：如何检查循环
+            </div>
+
+            <div class="key-point">
+                <strong>技巧1：在循环里多打印信息</strong>
+                <div class="code-block" style="margin-top: 10px;">
+<span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">1</span>; i &lt;= <span class="code-number">5</span>; i++) {
+    <span class="code-function">printf</span>(<span class="code-string">"第%d次循环，i=%d\n"</span>, i, i);  <span class="code-comment">// 看看每次i的值</span>
+}
+                </div>
+            </div>
+
+            <div class="key-point">
+                <strong>技巧2：手工画trace table</strong>
+                <br>在纸上画表格，模拟计算机执行过程：
+                <br>• 第1列：执行次数
+                <br>• 第2列：循环变量的值
+                <br>• 第3列：其他重要变量（如sum、count）
+                <br>• 第4列：条件判断结果
+            </div>
+
+            <div class="key-point">
+                <strong>技巧3：检查这4个关键点</strong>
+                <br>✓ 初始值对不对？（i应该从几开始？）
+                <br>✓ 结束条件对不对？（用<还是≤？）
+                <br>✓ 循环体里做的事对不对？
+                <br>✓ 更新方式对不对？（i++、i--、i+=2？）
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; padding: 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 15px; color: white;">
+            <h2 style="margin-bottom: 15px;">💪 循环学习三步走</h2>
+            <p style="font-size: 1.2em; line-height: 1.8;">
+                <strong>第一步：</strong>理解执行流程（看trace table）<br>
+                <strong>第二步：</strong>模仿例题，改改数字（从1-5改成1-10）<br>
+                <strong>第三步：</strong>尝试新问题（打印偶数、求乘积等）
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // 可以添加交互功能，让学生点击按钮逐步执行循环
+        console.log('循环追踪表可视化工具已加载');
+    </script>
+</body>
+</html>

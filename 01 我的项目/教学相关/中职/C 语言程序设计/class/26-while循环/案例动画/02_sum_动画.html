@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>练习2：求和 - while循环演示</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+        }
+        .main { flex: 1; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
+        .sidebar {
+            width: 260px;
+            background: rgba(255,255,255,0.95);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        h1 { color: white; font-size: 1.8em; text-align: center; margin: 0; }
+        .panel {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .code {
+            background: #2d3748;
+            color: #f7fafc;
+            padding: 12px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+        }
+        .code-line { padding: 3px 8px; border-radius: 4px; }
+        .code-line.hl { background: #f5576c; font-weight: bold; }
+        .vars { display: flex; gap: 12px; margin: 12px 0; }
+        .vb {
+            flex: 1;
+            padding: 15px;
+            background: #f0f0f0;
+            border: 3px solid #f5576c;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.4em;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        .vb.ch { background: #ffd93d; transform: scale(1.08); }
+        .formula {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 1.4em;
+            font-weight: bold;
+        }
+        .out {
+            background: #1a202c;
+            color: #0f0;
+            padding: 12px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.05em;
+            flex: 1;
+            overflow-y: auto;
+        }
+        button {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 1em;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        button:hover { transform: translateY(-2px); }
+        .info { background: #f8f9fa; padding: 10px; border-radius: 8px; font-size: 0.9em; flex: 1; }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <h1>练习2：求1-5之间的和 - while循环累加</h1>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; flex: 1;">
+            <div class="panel">
+                <h3 style="color: #f5576c; margin-bottom: 10px;">代码区</h3>
+                <div class="code">
+                    <div class="code-line" id="l1">int sum = 0;</div>
+                    <div class="code-line" id="l2">int i = 1;</div>
+                    <div class="code-line" id="l3"></div>
+                    <div class="code-line" id="l4">while (i &lt;= 5) {</div>
+                    <div class="code-line" id="l5">&nbsp;&nbsp;sum = sum + i;</div>
+                    <div class="code-line" id="l6">&nbsp;&nbsp;i++;</div>
+                    <div class="code-line" id="l7">}</div>
+                </div>
+                <div class="vars">
+                    <div class="vb" id="vi">i = ?</div>
+                    <div class="vb" id="vs">sum = ?</div>
+                </div>
+                <div class="formula" id="formula">等待开始...</div>
+            </div>
+
+            <div class="panel">
+                <h3 style="color: #f5576c; margin-bottom: 10px;">执行过程</h3>
+                <div class="out" id="output">等待开始...</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <h3 style="color: #f5576c; text-align: center;">控制面板</h3>
+        <button onclick="auto()">自动演示</button>
+        <button onclick="step()">单步执行</button>
+        <button onclick="reset()">重置</button>
+        <hr>
+        <div class="info">
+            <h4 style="color: #f5576c;">知识点</h4>
+            <ul style="padding-left: 20px; font-size: 0.9em;">
+                <li>sum初始化为0</li>
+                <li>每次循环：sum += i</li>
+                <li>i从1递增到5</li>
+                <li>结果：1+2+3+4+5=15</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        let i, sum, s, lines = [];
+
+        function hl(id) {
+            document.querySelectorAll('.code-line').forEach(el => el.classList.remove('hl'));
+            if (id) document.getElementById(id).classList.add('hl');
+        }
+
+        function upd(v) {
+            document.getElementById('vi').textContent = `i = ${i}`;
+            document.getElementById('vs').textContent = `sum = ${sum}`;
+            if (v) {
+                document.querySelectorAll('.vb').forEach(el => el.classList.remove('ch'));
+                setTimeout(() => {
+                    document.getElementById(v).classList.add('ch');
+                    setTimeout(() => document.getElementById(v).classList.remove('ch'), 400);
+                }, 50);
+            }
+        }
+
+        function log(text) {
+            lines.push(text);
+            document.getElementById('output').innerHTML = lines.join('<br>');
+        }
+
+        function step() {
+            if (s === 0) {
+                i = 1; sum = 0; s++;
+                hl('l1');
+                document.getElementById('formula').textContent = 'sum = 0, i = 1';
+                upd();
+                log('初始化：sum=0, i=1');
+                return;
+            }
+
+            if (i <= 5) {
+                const sub = (s - 1) % 3;
+                if (sub === 0) {
+                    hl('l4');
+                    log(`判断：i(${i}) <= 5 为真`);
+                    document.getElementById('formula').textContent = `${i} <= 5 ? 是`;
+                } else if (sub === 1) {
+                    hl('l5');
+                    const old = sum;
+                    sum += i;
+                    log(`累加：sum = ${old} + ${i} = ${sum}`);
+                    document.getElementById('formula').textContent = `${old} + ${i} = ${sum}`;
+                    upd('vs');
+                } else {
+                    hl('l6');
+                    i++;
+                    log(`i自增为${i}`);
+                    upd('vi');
+                }
+                s++;
+            } else {
+                hl('l4');
+                log(`\n循环结束！最终：sum = ${sum}`);
+                document.getElementById('formula').textContent = `✓ 结果：1+2+3+4+5 = ${sum}`;
+                s = -1;
+            }
+        }
+
+        function auto() {
+            reset();
+            const t = setInterval(() => {
+                if (s !== -1) step();
+                else clearInterval(t);
+            }, 900);
+        }
+
+        function reset() {
+            i = 0; sum = 0; s = 0; lines = [];
+            document.getElementById('vi').textContent = 'i = ?';
+            document.getElementById('vs').textContent = 'sum = ?';
+            document.getElementById('formula').textContent = '等待开始...';
+            document.getElementById('output').innerHTML = '等待开始...';
+            hl(null);
+        }
+
+        window.onload = reset;
+    </script>
+</body>
+</html>

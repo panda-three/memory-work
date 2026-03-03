@@ -1,0 +1,1821 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C语言数组排序算法教学</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2563eb;
+            --secondary: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --dark: #1f2937;
+            --light: #f3f4f6;
+            --border: #e5e7eb;
+            --text: #111827;
+            --text-light: #6b7280;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        header {
+            background: var(--dark);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        header p {
+            color: #9ca3af;
+            font-size: 1.1em;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: var(--light);
+            border-bottom: 2px solid var(--border);
+            overflow-x: auto;
+        }
+
+        .nav-tab {
+            padding: 15px 25px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 1em;
+            color: var(--text-light);
+            transition: all 0.3s;
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .nav-tab:hover {
+            background: white;
+            color: var(--primary);
+        }
+
+        .nav-tab.active {
+            color: var(--primary);
+            background: white;
+        }
+
+        .nav-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--primary);
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .tab-panel {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .algo-section {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .algo-section:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .algo-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .algo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            margin-right: 15px;
+        }
+
+        .algo-title {
+            flex: 1;
+        }
+
+        .algo-title h2 {
+            color: var(--text);
+            margin-bottom: 5px;
+        }
+
+        .algo-title p {
+            color: var(--text-light);
+            font-size: 0.95em;
+        }
+
+        .code-container {
+            background: #2d3748;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .code-header {
+            background: #1a202c;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .code-title {
+            color: #e2e8f0;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+
+        .copy-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.85em;
+            transition: background 0.3s;
+        }
+
+        .copy-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .copy-btn.copied {
+            background: var(--secondary);
+        }
+
+        .code-content {
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        .code-content pre {
+            color: #e2e8f0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .code-content .comment {
+            color: #68d391;
+        }
+
+        .code-content .keyword {
+            color: #f687b3;
+        }
+
+        .code-content .function {
+            color: #63b3ed;
+        }
+
+        .code-content .number {
+            color: #fbb6ce;
+        }
+
+        .code-content .string {
+            color: #fbd38d;
+        }
+
+        .steps-container {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .steps-container h3 {
+            color: var(--text);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .steps-container h3::before {
+            content: '📋';
+            margin-right: 10px;
+        }
+
+        .steps-list {
+            counter-reset: step-counter;
+            list-style: none;
+        }
+
+        .step-item {
+            counter-increment: step-counter;
+            position: relative;
+            padding-left: 40px;
+            margin-bottom: 15px;
+            line-height: 1.6;
+            color: var(--text-light);
+        }
+
+        .step-item::before {
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 28px;
+            height: 28px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .complexity-box {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .complexity-item {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .complexity-label {
+            color: var(--text-light);
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .complexity-value {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .visual-section {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .visual-controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .input-group input {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 1em;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        .array-display {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            min-height: 250px;
+            padding: 20px;
+            background: var(--light);
+            border-radius: 10px;
+            margin: 20px 0;
+            gap: 5px;
+        }
+
+        .array-bar {
+            flex: 1;
+            max-width: 60px;
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            border-radius: 5px 5px 0 0;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 5px;
+            font-weight: bold;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .array-bar.comparing {
+            background: var(--warning);
+            transform: scale(1.05);
+        }
+
+        .array-bar.swapping {
+            background: var(--danger);
+            animation: swap 0.5s;
+        }
+
+        .array-bar.sorted {
+            background: var(--secondary);
+        }
+
+        .array-bar.pivot {
+            background: #8b5cf6;
+        }
+
+        @keyframes swap {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-30px); }
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+
+        .speed-control {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: var(--light);
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+
+        .speed-control input[type="range"] {
+            flex: 1;
+        }
+
+        .message {
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            display: none;
+            animation: slideIn 0.3s;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(-20px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .message.success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #10b981;
+        }
+
+        .message.error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #ef4444;
+        }
+
+        .message.info {
+            background: #dbeafe;
+            color: #1e40af;
+            border: 1px solid #3b82f6;
+        }
+
+        .quiz-container {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .quiz-question {
+            margin-bottom: 20px;
+        }
+
+        .quiz-question h4 {
+            color: var(--text);
+            margin-bottom: 15px;
+        }
+
+        .quiz-options {
+            display: grid;
+            gap: 10px;
+        }
+
+        .quiz-option {
+            background: white;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--primary);
+            background: #f0f9ff;
+        }
+
+        .quiz-option input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .comparison-table th {
+            background: var(--light);
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .comparison-table tr:hover {
+            background: #f9fafb;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .badge-good {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge-medium {
+            background: #fed7aa;
+            color: #92400e;
+        }
+
+        .badge-bad {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                border-radius: 0;
+            }
+            
+            header h1 {
+                font-size: 1.8em;
+            }
+            
+            .nav-tabs {
+                overflow-x: scroll;
+            }
+            
+            .array-bar {
+                font-size: 0.8em;
+            }
+            
+            .visual-controls {
+                flex-direction: column;
+            }
+            
+            .input-group {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>C语言数组排序算法教学</h1>
+            <p>掌握四种经典排序算法：顺序比较法、选择法、冒泡法、插入法</p>
+        </header>
+
+        <nav class="nav-tabs">
+            <button class="nav-tab active" onclick="switchTab('overview')">算法概览</button>
+            <button class="nav-tab" onclick="switchTab('sequential')">顺序比较法</button>
+            <button class="nav-tab" onclick="switchTab('selection')">选择法</button>
+            <button class="nav-tab" onclick="switchTab('bubble')">冒泡法</button>
+            <button class="nav-tab" onclick="switchTab('insertion')">插入法</button>
+            <button class="nav-tab" onclick="switchTab('visualization')">可视化演示</button>
+            <button class="nav-tab" onclick="switchTab('comparison')">性能对比</button>
+        </nav>
+
+        <div class="content">
+            <!-- 算法概览 -->
+            <div id="overview" class="tab-panel active">
+                <div class="algo-section">
+                    <div class="algo-header">
+                        <div class="algo-icon">📚</div>
+                        <div class="algo-title">
+                            <h2>排序算法总览</h2>
+                            <p>了解四种基础排序算法的特点和适用场景</p>
+                        </div>
+                    </div>
+                    
+                    <p style="line-height: 1.8; color: var(--text-light); margin-bottom: 20px;">
+                        排序是程序设计中最基本的操作之一。我们将学习四种简单但重要的排序算法，
+                        每种算法都有其独特的思想和实现方式。通过学习这些算法，您将深入理解排序的本质。
+                    </p>
+
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>算法名称</th>
+                                <th>核心思想</th>
+                                <th>时间复杂度</th>
+                                <th>空间复杂度</th>
+                                <th>稳定性</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>顺序比较法</strong></td>
+                                <td>逐个比较，找到最小值</td>
+                                <td><span class="badge badge-medium">O(n²)</span></td>
+                                <td><span class="badge badge-good">O(1)</span></td>
+                                <td>稳定</td>
+                            </tr>
+                            <tr>
+                                <td><strong>选择法</strong></td>
+                                <td>每次选择最小值放到前面</td>
+                                <td><span class="badge badge-medium">O(n²)</span></td>
+                                <td><span class="badge badge-good">O(1)</span></td>
+                                <td>不稳定</td>
+                            </tr>
+                            <tr>
+                                <td><strong>冒泡法</strong></td>
+                                <td>相邻元素比较交换</td>
+                                <td><span class="badge badge-medium">O(n²)</span></td>
+                                <td><span class="badge badge-good">O(1)</span></td>
+                                <td>稳定</td>
+                            </tr>
+                            <tr>
+                                <td><strong>插入法</strong></td>
+                                <td>将元素插入到已排序部分</td>
+                                <td><span class="badge badge-medium">O(n²)</span></td>
+                                <td><span class="badge badge-good">O(1)</span></td>
+                                <td>稳定</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="steps-container">
+                        <h3>学习路径建议</h3>
+                        <ol class="steps-list">
+                            <li class="step-item">从顺序比较法开始，理解基本的比较和交换操作</li>
+                            <li class="step-item">学习选择法，掌握选择最小值的策略</li>
+                            <li class="step-item">掌握冒泡法，理解相邻元素交换的思想</li>
+                            <li class="step-item">深入插入法，学习如何维护有序序列</li>
+                            <li class="step-item">通过可视化演示观察算法执行过程</li>
+                            <li class="step-item">对比各算法性能，理解优缺点</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 顺序比较法 -->
+            <div id="sequential" class="tab-panel">
+                <div class="algo-section">
+                    <div class="algo-header">
+                        <div class="algo-icon">🔢</div>
+                        <div class="algo-title">
+                            <h2>顺序比较法排序</h2>
+                            <p>最直观的排序方法，通过逐个比较找出最小值</p>
+                        </div>
+                    </div>
+
+                    <div class="steps-container">
+                        <h3>算法原理</h3>
+                        <p style="color: var(--text-light); line-height: 1.8; margin-bottom: 15px;">
+                            顺序比较法是最简单的排序算法。它通过两两比较数组中的元素，
+                            将较小的元素向前移动，经过多轮比较后，数组就会变得有序。
+                        </p>
+                        <ol class="steps-list">
+                            <li class="step-item">从第一个元素开始，依次与后面的所有元素比较</li>
+                            <li class="step-item">如果发现比当前元素小的，就交换位置</li>
+                            <li class="step-item">每轮比较后，当前位置都会是剩余元素中的最小值</li>
+                            <li class="step-item">重复这个过程直到整个数组有序</li>
+                        </ol>
+                    </div>
+
+                    <div class="code-container">
+                        <div class="code-header">
+                            <span class="code-title">C语言实现</span>
+                            <button class="copy-btn" onclick="copyCode(this, 'sequential-code')">复制代码</button>
+                        </div>
+                        <div class="code-content" id="sequential-code">
+                            <pre><span class="comment">// 顺序比较法排序</span>
+<span class="keyword">void</span> <span class="function">sequentialSort</span>(<span class="keyword">int</span> arr[], <span class="keyword">int</span> n) {
+    <span class="keyword">int</span> i, j, temp;
+    
+    <span class="comment">// 外层循环：确定每个位置的元素</span>
+    <span class="keyword">for</span> (i = <span class="number">0</span>; i < n - <span class="number">1</span>; i++) {
+        <span class="comment">// 内层循环：将第i个元素与后面的所有元素比较</span>
+        <span class="keyword">for</span> (j = i + <span class="number">1</span>; j < n; j++) {
+            <span class="comment">// 如果后面的元素更小，则交换</span>
+            <span class="keyword">if</span> (arr[i] > arr[j]) {
+                temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+    }
+}
+
+<span class="comment">// 打印数组</span>
+<span class="keyword">void</span> <span class="function">printArray</span>(<span class="keyword">int</span> arr[], <span class="keyword">int</span> n) {
+    <span class="keyword">int</span> i;
+    <span class="keyword">for</span> (i = <span class="number">0</span>; i < n; i++) {
+        <span class="function">printf</span>(<span class="string">"%d "</span>, arr[i]);
+    }
+    <span class="function">printf</span>(<span class="string">"\n"</span>);
+}
+
+<span class="comment">// 使用示例</span>
+<span class="keyword">int</span> <span class="function">main</span>() {
+    <span class="keyword">int</span> arr[] = {<span class="number">64</span>, <span class="number">34</span>, <span class="number">25</span>, <span class="number">12</span>, <span class="number">22</span>, <span class="number">11</span>, <span class="number">90</span>};
+    <span class="keyword">int</span> n = <span class="keyword">sizeof</span>(arr) / <span class="keyword">sizeof</span>(arr[<span class="number">0</span>]);
+    
+    <span class="function">printf</span>(<span class="string">"排序前: "</span>);
+    <span class="function">printArray</span>(arr, n);
+    
+    <span class="function">sequentialSort</span>(arr, n);
+    
+    <span class="function">printf</span>(<span class="string">"排序后: "</span>);
+    <span class="function">printArray</span>(arr, n);
+    
+    <span class="keyword">return</span> <span class="number">0</span>;
+}</pre>
+                        </div>
+                    </div>
+
+                    <div class="complexity-box">
+                        <div class="complexity-item">
+                            <div class="complexity-label">最好时间复杂度</div>
+                            <div class="complexity-value">O(n²)</div>
+                        </div>
+                        <div class="complexity-item">
+                            <div class="complexity-label">平均时间复杂度</div>
+                            <div class="complexity-value">O(n²)</div>
+                        </div>
+                        <div class="complexity-item">
+                            <div class="complexity-label">最坏时间复杂度</div>
+                            <div class="complexity-value">O(n²)</div>
+                        </div>
+                        <div class="complexity-item">
+                            <div class="complexity-label">空间复杂度</div>
+                            <div class="complexity-value">O(1)</div>
+                        </div>
+                    </div>
+
+                    <div class="steps-container">
+                        <h3>算法特点</h3>
+                        <ul style="line-height: 2; color: var(--text-light); padding-left: 20px;">
+                            <li><strong>简单直观：</strong>算法逻辑简单，容易理解和实现</li>
+                            <li><strong>稳定排序：</strong>相等元素的相对位置不会改变</li>
+                            <li><strong>原地排序：</strong>不需要额外的存储空间</li>
+                            <li><strong>效率较低：</strong>对于大规模数据效率不高</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 选择法 -->
+            <div id="selection" class="tab-panel">
+                <div class="algo-section">
+                    <div class="algo-header">
+                        <div class="algo-icon">🎯</div>
+                        <div class="algo-title">
+                            <h2>选择法排序</h2>
+                            <p>每次选择最小值，放到正确位置</p>
+                        </div>
+                    </div>
+
+                    <div class="steps-container">
+                        <h3>算法原理</h3>
+                        <p style="color: var(--text-light); line-height: 1.8; margin-bottom: 15px;">
+                            选择排序将数组分为已排序和未排序两部分。每次从未排序部分选择最小值，
+                            放到已排序部分的末尾。重复这个过程直到整个数组有序。
+                        </p>
+                        <ol class="steps-list">
+                            <li class="step-item">在未排序部分找到最小元素的索引</li>
+                            <li class="step-item">将最小元素与未排序部分的第一个元素交换</li>
+                            <li class="step-item">扩展已排序部分的边界</li>
+                            <li class="step-item">重复直到所有元素都排序完成</li>
+                        </ol>
+                    </div>
+
+                    <div class="code-container">
+                        <div class="code-header">
+                            <span class="code-title">C语言实现</span>
+                            <button class="copy-btn" onclick="copyCode(this, 'selection-code')">复制代码</button>
+                        </div>
+                        <div class="code-content" id="selection-code">
+                            <pre><span class="comment">// 选择法排序</span>
+<span class="keyword">void</span> <span class="function">selectionSort</span>(<span class="keyword">int</span> arr[], <span class="keyword">int</span> n) {
+    <span class="keyword">int</span> i, j, min_idx, temp;
+    
+    <span class="comment">// 逐个位置放置元素</span>
+    <span class="keyword">for</span> (i = <span class="number">0</span>; i < n - <span class="number">1</span>; i++) {
+        <span class="comment">// 假设当前位置是最小的</span>
+        min_idx = i;
+        
+        <span class="comment">// 在未排序部分寻找真正的最小值</span>
+        <span class="keyword">for</span> (j = i + <span class="number">1</span>; j < n; j++) {
+            <span class="keyword">if</span> (arr[j] < arr[min_idx]) {
+                min_idx = j;
+            }
+        }
+        
+        <span class="comment">// 将最小值交换到正确位置</span>
+        <span class="keyword">if</span> (min_idx != i) {
+            temp = arr[i];
+            arr[i] = arr[min_idx];
+            arr[min_idx] = temp;
+        }
+    }
+}
+
+<span class="comment">// 优化版：减少不必要的交换</span>
+<span class="keyword">void</span> <span class="function">selectionSortOptimized</span>(<span class="keyword">int</span> arr[], <span class="keyword">int</span> n) {
+    <span class="keyword">int</span> i, j, min_idx, temp;
+    
+    <span class="keyword">for</span> (i = <span class="number">0</span>; i < n - <span class="number">1</span>; i++) {
+        min_idx = i;
+        <span class="keyword">for</span> (j = i + <span class="number">1</span>; j < n; j++) {
+            <span class="keyword">if</span> (arr[j] < arr[min_idx]) {
+                min_idx = j;
+            }
+        }
+        
+        <span class="comment">// 只有当找到更小的元素时才交换</span>
+        <span class="keyword">if</span> (min_idx != i) {
+            temp = arr[i];
+            arr[i] = arr[min_idx];
+            arr[min_idx] = temp;
+        }
+    }
+}</pre>
+                        </div>
+                    </div>
+
+                    <div class="complexity-box">
+                        <div class="complexity-item">
+                            <div class="complexity-label">最好时间复杂度</div>
+                            <div class="complexity-value">O(n²)</div>
+                        </div>
+                        <div class="complexity-item">
+                            <div class="complexity-label">平均时间复杂度</div>
+                            <div class="complexity-value">O(n²)</div>
+                        </div>
+                        <div class="complexity-item">
+                            <div class="complexity-label">最坏时间复杂度</div>
+                            <div class="complexity-value">O(n²)</div>
+                        </div>
+                        <div class="complexity-item">
+                            <div class="complexity-label">交换次数</div>
+                            <div class="complexity-value">最多n-1次</div>
+                        </div>
+                    </div>
+
+                    <div class="steps-container">
+                        <h3>算法特点</h3>
+                        <ul style="line-height: 2; color: var(--text-light); padding-left: 20px;">
+                            <li><strong>交换次数少：</strong>最多进行n-1次交换</li>
+                            <li><strong>不稳定排序：</strong>可能改变相等元素的相对位置</li>
+                            <li><strong>性能稳定：</strong>无论数据如何，时间复杂度都是O(n²)</li>
+                            <li><strong>简单高效：</strong>在小规模数据上表现良好</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 冒泡法 -->
+            <div id="bubble" class="tab-panel">
+                <div class="algo-section">
+                    <div class="algo-header">
+                        <div class="algo-icon">🫧</div>
+                        <div class="algo-title">
+                            <h2>冒泡法排序</h2>
+                            <p>相邻元素比较，大数"冒泡"到后面</p>
+                        </div>
+                    </div>
+
+                    <div class="steps-container">
+                        <h3>算法原理</h3>
+                        <p style="color: var(--text-light); line-height: 1.8; margin-bottom: 15px;">
+                            冒泡排序通过重复遍历数组，比较相邻元素并交换位置。
+                            每次遍历都会将当前未排序部分的最大值"冒泡"到末尾。
+                        </p>
+                        <ol class="steps-list">
+                            <li class="step-item">从数组开始比较相邻的两个元素</li>
+                            <li class="step-item">如果前一个比后一个大，交换它们的位置</li>
+                            <li class="step-item">继续向后比较，直到数组末尾</li>
+                            <li class="step-item">重复遍历，每次减少比较范围</li>
+                        </ol>
+                    </div>
+
+                    <div class="code-container">
+                        <div class="code-header">
+                            <span class="code-title">C语言实现</span>
+                            <button class="copy-btn" onclick="copyCode(this, 'bubble-code')">复制代码</button>
+                        </div>
+                        <div class="code-content" id="bubble-code">
+                            <pre><span class="comment">// 冒泡法排序（基础版）</span>
+<span class="keyword">void</span> <span class="function">bubbleSort</span>(<span class="keyword">int</span> arr[], <span class="keyword">int</span> n) {
+    <span class="keyword">int</span> i, j, temp;
+    
+    <span class="comment">// 外层循环控制排序轮数</span>
+    <span class="keyword">for</span> (i = <span class="number">0</span>; i < n - <span class="number">1</span>; i++) {
+        <span class="comment">// 内层循环进行相邻元素比较</span>
+        <span class="keyword">for</span> (j = <span class="number">0</span>; j < n - i - <span class="number">1</span>; j++) {
+            <span class="comment">// 如果前一个元素大于后一个，则交换</span>
+            <span class="keyword">if</span> (arr[j] > arr[j + <span class="number">1</span>]) {
+                temp = arr[j];
+                arr[j] = arr[j + <span class="number">1</span>];
+                arr[j + <span class="number">1</span>] = temp;
+            }
+        }
+    }
+}
+
+<span class="comment">// 优化版：增加标志位</span>
+<span class="keyword">void</span> <span class="function">bubbleSortOptimized</span>(<span class="keyword">int</span> arr[], <span class="keyword">int</span> n) {
+    <span class="keyword">int</span> i, j, temp;
+    <span class="keyword">int</span> swapped;  <span class="comment">// 标志位，记录是否发生交换</span>
+    
+    <span class="keyword">for</span> (i = <span class="number">0</span>; i < n - <span class="number">1</span>; i++) {
+        swapped = <span class="number">0</span>;
+        <span class="keyword">for</span> (j = <span class="number">0</span>; j < n - i - <span class="number">1</span>; j++) {
+            <span class="keyword">if</span> (arr[j] > arr[j + <span class="number">1</span>]) {
+                <span class="comment">// 交换元素</span>
+                temp = arr[j];
+                arr[j] = arr[j + <span class="number">1</span>];
+                arr[j + <span class="number">1</span>] = temp;
+                swapped = <span class="number">1</span>;  <span class="comment">// 标记发生了交换</span>
+            }
+        }
+        
+        <span class="comment">// 如果没有发生交换，说明数组已经有序</span>
+        <span class="keyword">if</span> (swapped == <span class="number">0</span>) {
+            <span class="keyword">break</span>;
+        }
+    }
+}
+
+<span class="comment">// 双向冒泡（鸡尾酒排序）</span>
+<span class="keyword">void</span> <span class="function">cocktailSort</span>(<span class="keyword">int</span> arr[], <span class="keyword">int</span> n) {
+    <span class="keyword">int</span> swapped = <span class="number">1</span>;
+    <span class="keyword">int</span> start = <span class="number">0</span>;
+    <span class="keyword">int</span> end = n - <span class="number">1</span>;
+    <span class="keyword">int</span> i, temp;
+    
+    <span class="keyword">while</span> (swapped) {
+        swapped = <span class="number">0</span>;
+        
+        <span class="comment">// 从左到右冒泡</span>
+        <span class="keyword">for</span> (i = start; i < end; i++) {
+            <span class="keyword">if</span> (arr[i] > arr[i + <span class="number">1</span>]) {
+                temp = arr[i];
+                arr[i] = arr[i + <span class="number">1</span>];
+                arr[i + <span class="number">1</span>] = temp;
+                swapped = <span class="number">1</span>;
+            }
+        }
+        
+        <span class="keyword">if</span> (!swapped) <span class="keyword">break</span>;
+        
+        swapped = <span class="number">0</span>;
+        end--;
+        
+        <span class="comment">// 从右到左冒泡</span>
+        <span class="keyword">for</span> (i = end - <span class="number">1</span>; i >= start; i--) {
+            <span class="keyword">if</span> (arr[i] > arr[i + <span class="number">1</span>]) {
+                temp = arr[i];
+                arr[i] = arr[i + <span class="number">1</span>];
+                arr[i + <span class="number">1</span>] = temp;
+                swapped = <span class="number">1</span>;
+            }
+        }
+        
+        start++;
+    }
+}</pre>
+                        </div>
+                    </div>
+
+                    <div class="complexity-box">
+                        <div class="complexity-item">
+                            <div class="complexity-label">最好时间复杂度</div>
+                            <div class="complexity-value">O(n)</div>
+                        </div>
+                        <div class="complexity-item">
+                            <div class="complexity-label">平均时间复杂度</div>
+                            <div class="complexity-value">O(n²)</div>
+                        </div>
+                        <div class="complexity-item">
+                            <div class="complexity-label">最坏时间复杂度</div>
+                            <div class="complexity-value">O(n²)</div>
+                        </div>
+                        <div class="complexity-item">
+                            <div class="complexity-label">稳定性</div>
+                            <div class="complexity-value">稳定</div>
+                        </div>
+                    </div>
+
+                    <div class="steps-container">
+                        <h3>算法特点</h3>
+                        <ul style="line-height: 2; color: var(--text-light); padding-left: 20px;">
+                            <li><strong>稳定排序：</strong>相等元素的相对位置保持不变</li>
+                            <li><strong>自适应：</strong>对基本有序的数组效率很高</li>
+                            <li><strong>原地排序：</strong>只需要常数级别的额外空间</li>
+                            <li><strong>易于理解：</strong>逻辑简单，适合初学者学习</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 插入法 -->
+            <div id="insertion" class="tab-panel">
+                <div class="algo-section">
+                    <div class="algo-header">
+                        <div class="algo-icon">📌</div>
+                        <div class="algo-title">
+                            <h2>插入法排序</h2>
+                            <p>将元素插入到已排序部分的正确位置</p>
+                        </div>
+                    </div>
+
+                    <div class="steps-container">
+                        <h3>算法原理</h3>
+                        <p style="color: var(--text-light); line-height: 1.8; margin-bottom: 15px;">
+                            插入排序将数组分为已排序和未排序两部分。每次从未排序部分取出第一个元素，
+                            插入到已排序部分的正确位置。类似于整理扑克牌的过程。
+                        </p>
+                        <ol class="steps-list">
+                            <li class="step-item">将第一个元素视为已排序序列</li>
+                            <li class="step-item">取出下一个元素，在已排序序列中从后向前扫描</li>
+                            <li class="step-item">找到合适位置并插入元素</li>
+                            <li class="step-item">重复直到所有元素都插入完成</li>
+                        </ol>
+                    </div>
+
+                    <div class="code-container">
+                        <div class="code-header">
+                            <span class="code-title">C语言实现</span>
+                            <button class="copy-btn" onclick="copyCode(this, 'insertion-code')">复制代码</button>
+                        </div>
+                        <div class="code-content" id="insertion-code">
+                            <pre><span class="comment">// 插入法排序（基础版）</span>
+<span class="keyword">void</span> <span class="function">insertionSort</span>(<span class="keyword">int</span> arr[], <span class="keyword">int</span> n) {
+    <span class="keyword">int</span> i, j, key;
+    
+    <span class="comment">// 从第二个元素开始</span>
+    <span class="keyword">for</span> (i = <span class="number">1</span>; i < n; i++) {
+        key = arr[i];  <span class="comment">// 待插入的元素</span>
+        j = i - <span class="number">1</span>;
+        
+        <span class="comment">// 将大于key的元素向后移动</span>
+        <span class="keyword">while</span> (j >= <span class="number">0</span> && arr[j] > key) {
+            arr[j + <span class="number">1</span>] = arr[j];
+            j = j - <span class="number">1</span>;
+        }
+        
+        <span class="comment">// 插入key到正确位置</span>
+        arr[j + <span class="number">1</span>] = key;
+    }
+}
+
+<span class="comment">// 二分插入排序（优化版）</span>
+<span class="keyword">void</span> <span class="function">binaryInsertionSort</span>(<span class="keyword">int</span> arr[], <span class="keyword">int</span> n) {
+    <span class="keyword">int</span> i, j, key, left, right, mid;
+    
+    <span class="keyword">for</span> (i = <span class="number">1</span>; i < n; i++) {
+        key = arr[i];
+        left = <span class="number">0</span>;
+        right = i - <span class="number">1</span>;
+        
+        <span class="comment">// 二分查找插入位置</span>
+        <span class="keyword">while</span> (left <= right) {
+            mid = (left + right) / <span class="number">2</span>;
+            <span class="keyword">if</span> (arr[mid] > key) {
+                right = mid - <span class="number">1</span>;
+            } <span class="keyword">else</span> {
+                left = mid + <span class="number">1</span>;
+            }
+        }
+        
+        <span class="comment">// 移动元素并插入</span>
+        <span class="keyword">for</span> (j = i - <span class="number">1</span>; j >= left; j--) {
+            arr[j + <span class="number">1</span>] = arr[j];
+        }
+        arr[left] = key;
+    }
+}
+
+<span class="comment">// 希尔排序（插入排序的改进版）</span>
+<span class="keyword">void</span> <span class="function">shellSort</span>(<span class="keyword">int</span> arr[], <span class="keyword">int</span> n) {
+    <span class="keyword">int</span> gap, i, j, temp;
+    
+    <span class="comment">// 从大间隔开始，逐渐减小间隔</span>
+    <span class="keyword">for</span> (gap = n / <span class="number">2</span>; gap > <span class="number">0</span>; gap /= <span class="number">2</span>) {
+        <span class="comment">// 对每个间隔进行插入排序</span>
+        <span class="keyword">for</span> (i = gap; i < n; i++) {
+            temp = arr[i];
+            <span class="keyword">for</span> (j = i; j >= gap && arr[j - gap] > temp; j -= gap) {
+                arr[j] = arr[j - gap];
+            }
+            arr[j] = temp;
+        }
+    }
+}</pre>
+                        </div>
+                    </div>
+
+                    <div class="complexity-box">
+                        <div class="complexity-item">
+                            <div class="complexity-label">最好时间复杂度</div>
+                            <div class="complexity-value">O(n)</div>
+                        </div>
+                        <div class="complexity-item">
+                            <div class="complexity-label">平均时间复杂度</div>
+                            <div class="complexity-value">O(n²)</div>
+                        </div>
+                        <div class="complexity-item">
+                            <div class="complexity-label">最坏时间复杂度</div>
+                            <div class="complexity-value">O(n²)</div>
+                        </div>
+                        <div class="complexity-item">
+                            <div class="complexity-label">稳定性</div>
+                            <div class="complexity-value">稳定</div>
+                        </div>
+                    </div>
+
+                    <div class="steps-container">
+                        <h3>算法特点</h3>
+                        <ul style="line-height: 2; color: var(--text-light); padding-left: 20px;">
+                            <li><strong>稳定排序：</strong>保持相等元素的相对顺序</li>
+                            <li><strong>自适应强：</strong>对部分有序数组效率很高</li>
+                            <li><strong>在线算法：</strong>可以在接收数据的同时进行排序</li>
+                            <li><strong>小规模高效：</strong>适合小规模数据排序</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 可视化演示 -->
+            <div id="visualization" class="tab-panel">
+                <div class="visual-section">
+                    <h2 style="margin-bottom: 20px;">排序算法可视化演示</h2>
+                    
+                    <div class="visual-controls">
+                        <div class="input-group">
+                            <input type="text" id="arrayInput" placeholder="输入数组，用逗号分隔" value="64,34,25,12,22,11,90">
+                            <button class="btn btn-primary" onclick="generateArray()">生成数组</button>
+                        </div>
+                        <button class="btn btn-secondary" onclick="generateRandomArray()">随机生成</button>
+                        <button class="btn btn-warning" onclick="resetArray()">重置</button>
+                    </div>
+
+                    <div class="visual-controls">
+                        <select id="algoSelect" class="btn" style="background: white; border: 2px solid var(--border);">
+                            <option value="sequential">顺序比较法</option>
+                            <option value="selection">选择法</option>
+                            <option value="bubble">冒泡法</option>
+                            <option value="insertion">插入法</option>
+                        </select>
+                        <button class="btn btn-primary" onclick="startVisualization()">开始演示</button>
+                        <button class="btn btn-danger" onclick="stopVisualization()">停止</button>
+                    </div>
+
+                    <div class="speed-control">
+                        <label>演示速度：</label>
+                        <input type="range" id="speedSlider" min="100" max="2000" value="800">
+                        <span id="speedValue">800ms</span>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-label">比较次数</div>
+                            <div class="stat-value" id="compareCount">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">交换次数</div>
+                            <div class="stat-value" id="swapCount">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">数组长度</div>
+                            <div class="stat-value" id="arrayLength">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-label">当前步骤</div>
+                            <div class="stat-value" id="stepCount">0</div>
+                        </div>
+                    </div>
+
+                    <div class="array-display" id="arrayDisplay">
+                        <!-- 数组可视化区域 -->
+                    </div>
+
+                    <div class="message" id="visualMessage"></div>
+                </div>
+            </div>
+
+            <!-- 性能对比 -->
+            <div id="comparison" class="tab-panel">
+                <div class="algo-section">
+                    <div class="algo-header">
+                        <div class="algo-icon">📊</div>
+                        <div class="algo-title">
+                            <h2>算法性能对比</h2>
+                            <p>全面对比四种排序算法的优缺点</p>
+                        </div>
+                    </div>
+
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>特性</th>
+                                <th>顺序比较法</th>
+                                <th>选择法</th>
+                                <th>冒泡法</th>
+                                <th>插入法</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>时间复杂度（平均）</strong></td>
+                                <td><span class="badge badge-medium">O(n²)</span></td>
+                                <td><span class="badge badge-medium">O(n²)</span></td>
+                                <td><span class="badge badge-medium">O(n²)</span></td>
+                                <td><span class="badge badge-medium">O(n²)</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>时间复杂度（最好）</strong></td>
+                                <td><span class="badge badge-medium">O(n²)</span></td>
+                                <td><span class="badge badge-medium">O(n²)</span></td>
+                                <td><span class="badge badge-good">O(n)</span></td>
+                                <td><span class="badge badge-good">O(n)</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>空间复杂度</strong></td>
+                                <td><span class="badge badge-good">O(1)</span></td>
+                                <td><span class="badge badge-good">O(1)</span></td>
+                                <td><span class="badge badge-good">O(1)</span></td>
+                                <td><span class="badge badge-good">O(1)</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>稳定性</strong></td>
+                                <td>✅ 稳定</td>
+                                <td>❌ 不稳定</td>
+                                <td>✅ 稳定</td>
+                                <td>✅ 稳定</td>
+                            </tr>
+                            <tr>
+                                <td><strong>交换次数</strong></td>
+                                <td>最多n(n-1)/2</td>
+                                <td>最多n-1</td>
+                                <td>最多n(n-1)/2</td>
+                                <td>最多n(n-1)/2</td>
+                            </tr>
+                            <tr>
+                                <td><strong>自适应</strong></td>
+                                <td>❌ 否</td>
+                                <td>❌ 否</td>
+                                <td>✅ 是</td>
+                                <td>✅ 是</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="steps-container">
+                        <h3>适用场景分析</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px;">
+                            <div style="background: white; padding: 15px; border-radius: 8px; border: 2px solid var(--border);">
+                                <h4 style="color: var(--primary); margin-bottom: 10px;">🎯 顺序比较法</h4>
+                                <ul style="color: var(--text-light); line-height: 1.8; padding-left: 20px;">
+                                    <li>教学演示</li>
+                                    <li>小规模数据</li>
+                                    <li>需要稳定排序</li>
+                                </ul>
+                            </div>
+                            <div style="background: white; padding: 15px; border-radius: 8px; border: 2px solid var(--border);">
+                                <h4 style="color: var(--primary); margin-bottom: 10px;">🎯 选择法</h4>
+                                <ul style="color: var(--text-light); line-height: 1.8; padding-left: 20px;">
+                                    <li>交换成本高</li>
+                                    <li>内存限制严格</li>
+                                    <li>简单场景</li>
+                                </ul>
+                            </div>
+                            <div style="background: white; padding: 15px; border-radius: 8px; border: 2px solid var(--border);">
+                                <h4 style="color: var(--primary); margin-bottom: 10px;">🎯 冒泡法</h4>
+                                <ul style="color: var(--text-light); line-height: 1.8; padding-left: 20px;">
+                                    <li>基本有序数据</li>
+                                    <li>小规模数据</li>
+                                    <li>需要检测有序性</li>
+                                </ul>
+                            </div>
+                            <div style="background: white; padding: 15px; border-radius: 8px; border: 2px solid var(--border);">
+                                <h4 style="color: var(--primary); margin-bottom: 10px;">🎯 插入法</h4>
+                                <ul style="color: var(--text-light); line-height: 1.8; padding-left: 20px;">
+                                    <li>部分有序数据</li>
+                                    <li>在线排序</li>
+                                    <li>小规模数据</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quiz-container">
+                        <h3 style="margin-bottom: 20px;">📝 知识测试</h3>
+                        
+                        <div class="quiz-question">
+                            <h4>1. 哪种排序算法在最好情况下时间复杂度为O(n)？</h4>
+                            <div class="quiz-options">
+                                <label class="quiz-option">
+                                    <input type="radio" name="q1" value="a">
+                                    A. 顺序比较法和选择法
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q1" value="b">
+                                    B. 冒泡法和插入法
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q1" value="c">
+                                    C. 所有算法
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q1" value="d">
+                                    D. 没有算法
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="quiz-question">
+                            <h4>2. 哪种排序算法是不稳定的？</h4>
+                            <div class="quiz-options">
+                                <label class="quiz-option">
+                                    <input type="radio" name="q2" value="a">
+                                    A. 选择法
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q2" value="b">
+                                    B. 冒泡法
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q2" value="c">
+                                    C. 插入法
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q2" value="d">
+                                    D. 顺序比较法
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="quiz-question">
+                            <h4>3. 对于基本有序的数组，哪种算法效率最高？</h4>
+                            <div class="quiz-options">
+                                <label class="quiz-option">
+                                    <input type="radio" name="q3" value="a">
+                                    A. 顺序比较法
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q3" value="b">
+                                    B. 选择法
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q3" value="c">
+                                    C. 插入法
+                                </label>
+                                <label class="quiz-option">
+                                    <input type="radio" name="q3" value="d">
+                                    D. 所有算法效率相同
+                                </label>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 20px;">
+                            <button class="btn btn-primary" onclick="checkAnswers()">提交答案</button>
+                            <button class="btn btn-secondary" onclick="resetQuiz()">重置</button>
+                        </div>
+
+                        <div class="message" id="quizMessage"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 全局变量
+        let currentArray = [];
+        let originalArray = [];
+        let isVisualizing = false;
+        let compareCount = 0;
+        let swapCount = 0;
+        let stepCount = 0;
+        let visualizationSpeed = 800;
+
+        // 切换标签页
+        function switchTab(tabName) {
+            // 隐藏所有内容
+            const panels = document.querySelectorAll('.tab-panel');
+            panels.forEach(panel => panel.classList.remove('active'));
+            
+            // 移除所有标签的active类
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // 显示选中的内容
+            document.getElementById(tabName).classList.add('active');
+            
+            // 添加active类到选中的标签
+            event.target.classList.add('active');
+        }
+
+        // 复制代码功能
+        function copyCode(button, codeId) {
+            const codeElement = document.getElementById(codeId);
+            const text = codeElement.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                button.textContent = '已复制！';
+                button.classList.add('copied');
+                
+                setTimeout(() => {
+                    button.textContent = '复制代码';
+                    button.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        // 生成数组
+        function generateArray() {
+            const input = document.getElementById('arrayInput').value;
+            const numbers = input.split(',').map(n => parseInt(n.trim())).filter(n => !isNaN(n));
+            
+            if (numbers.length === 0) {
+                showMessage('visualMessage', '请输入有效的数字！', 'error');
+                return;
+            }
+            
+            currentArray = [...numbers];
+            originalArray = [...numbers];
+            visualizeArray();
+            updateStats();
+            showMessage('visualMessage', '数组生成成功！', 'success');
+        }
+
+        // 生成随机数组
+        function generateRandomArray() {
+            const size = Math.floor(Math.random() * 6) + 5; // 5-10个元素
+            currentArray = [];
+            for (let i = 0; i < size; i++) {
+                currentArray.push(Math.floor(Math.random() * 90) + 10);
+            }
+            originalArray = [...currentArray];
+            document.getElementById('arrayInput').value = currentArray.join(',');
+            visualizeArray();
+            updateStats();
+            showMessage('visualMessage', '随机数组生成成功！', 'success');
+        }
+
+        // 可视化数组
+        function visualizeArray(comparing = [], swapping = [], sorted = [], pivot = -1) {
+            const display = document.getElementById('arrayDisplay');
+            display.innerHTML = '';
+            
+            if (currentArray.length === 0) return;
+            
+            const maxValue = Math.max(...currentArray);
+            
+            currentArray.forEach((value, index) => {
+                const bar = document.createElement('div');
+                bar.className = 'array-bar';
+                bar.textContent = value;
+                bar.style.height = `${(value / maxValue) * 200 + 30}px`;
+                
+                if (swapping.includes(index)) {
+                    bar.classList.add('swapping');
+                } else if (comparing.includes(index)) {
+                    bar.classList.add('comparing');
+                } else if (sorted.includes(index)) {
+                    bar.classList.add('sorted');
+                } else if (index === pivot) {
+                    bar.classList.add('pivot');
+                }
+                
+                display.appendChild(bar);
+            });
+        }
+
+        // 更新统计信息
+        function updateStats() {
+            document.getElementById('compareCount').textContent = compareCount;
+            document.getElementById('swapCount').textContent = swapCount;
+            document.getElementById('arrayLength').textContent = currentArray.length;
+            document.getElementById('stepCount').textContent = stepCount;
+        }
+
+        // 延迟函数
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // 开始可视化
+        async function startVisualization() {
+            if (isVisualizing || currentArray.length === 0) return;
+            
+            isVisualizing = true;
+            compareCount = 0;
+            swapCount = 0;
+            stepCount = 0;
+            
+            const algorithm = document.getElementById('algoSelect').value;
+            
+            switch(algorithm) {
+                case 'sequential':
+                    await sequentialSortVisual();
+                    break;
+                case 'selection':
+                    await selectionSortVisual();
+                    break;
+                case 'bubble':
+                    await bubbleSortVisual();
+                    break;
+                case 'insertion':
+                    await insertionSortVisual();
+                    break;
+            }
+            
+            // 标记所有元素为已排序
+            const sortedIndices = Array.from({length: currentArray.length}, (_, i) => i);
+            visualizeArray([], [], sortedIndices);
+            
+            isVisualizing = false;
+            showMessage('visualMessage', '排序完成！', 'success');
+        }
+
+        // 顺序比较法可视化
+        async function sequentialSortVisual() {
+            const n = currentArray.length;
+            const sorted = [];
+            
+            for (let i = 0; i < n - 1 && isVisualizing; i++) {
+                for (let j = i + 1; j < n && isVisualizing; j++) {
+                    visualizeArray([i, j], [], sorted);
+                    compareCount++;
+                    stepCount++;
+                    updateStats();
+                    await sleep(visualizationSpeed);
+                    
+                    if (currentArray[i] > currentArray[j]) {
+                        visualizeArray([], [i, j], sorted);
+                        await sleep(visualizationSpeed);
+                        
+                        const temp = currentArray[i];
+                        currentArray[i] = currentArray[j];
+                        currentArray[j] = temp;
+                        
+                        swapCount++;
+                        updateStats();
+                    }
+                }
+                sorted.push(i);
+            }
+            sorted.push(n - 1);
+        }
+
+        // 选择法可视化
+        async function selectionSortVisual() {
+            const n = currentArray.length;
+            const sorted = [];
+            
+            for (let i = 0; i < n - 1 && isVisualizing; i++) {
+                let minIdx = i;
+                
+                for (let j = i + 1; j < n && isVisualizing; j++) {
+                    visualizeArray([minIdx, j], [], sorted);
+                    compareCount++;
+                    stepCount++;
+                    updateStats();
+                    await sleep(visualizationSpeed);
+                    
+                    if (currentArray[j] < currentArray[minIdx]) {
+                        minIdx = j;
+                    }
+                }
+                
+                if (minIdx !== i) {
+                    visualizeArray([], [i, minIdx], sorted);
+                    await sleep(visualizationSpeed);
+                    
+                    const temp = currentArray[i];
+                    currentArray[i] = currentArray[minIdx];
+                    currentArray[minIdx] = temp;
+                    
+                    swapCount++;
+                    updateStats();
+                }
+                
+                sorted.push(i);
+            }
+            sorted.push(n - 1);
+        }
+
+        // 冒泡法可视化
+        async function bubbleSortVisual() {
+            const n = currentArray.length;
+            const sorted = [];
+            
+            for (let i = 0; i < n - 1 && isVisualizing; i++) {
+                let swapped = false;
+                
+                for (let j = 0; j < n - i - 1 && isVisualizing; j++) {
+                    visualizeArray([j, j + 1], [], sorted);
+                    compareCount++;
+                    stepCount++;
+                    updateStats();
+                    await sleep(visualizationSpeed);
+                    
+                    if (currentArray[j] > currentArray[j + 1]) {
+                        visualizeArray([], [j, j + 1], sorted);
+                        await sleep(visualizationSpeed);
+                        
+                        const temp = currentArray[j];
+                        currentArray[j] = currentArray[j + 1];
+                        currentArray[j + 1] = temp;
+                        
+                        swapCount++;
+                        swapped = true;
+                        updateStats();
+                    }
+                }
+                
+                sorted.push(n - i - 1);
+                
+                if (!swapped) break;
+            }
+            
+            if (sorted.length < n) {
+                for (let i = 0; i <= n - sorted.length - 1; i++) {
+                    sorted.push(i);
+                }
+            }
+        }
+
+        // 插入法可视化
+        async function insertionSortVisual() {
+            const n = currentArray.length;
+            const sorted = [0];
+            
+            for (let i = 1; i < n && isVisualizing; i++) {
+                let key = currentArray[i];
+                let j = i - 1;
+                
+                while (j >= 0 && currentArray[j] > key && isVisualizing) {
+                    visualizeArray([j, j + 1], [], sorted);
+                    compareCount++;
+                    stepCount++;
+                    updateStats();
+                    await sleep(visualizationSpeed);
+                    
+                    visualizeArray([], [j, j + 1], sorted);
+                    await sleep(visualizationSpeed);
+                    
+                    currentArray[j + 1] = currentArray[j];
+                    j--;
+                    swapCount++;
+                    updateStats();
+                }
+                
+                currentArray[j + 1] = key;
+                sorted.push(i);
+            }
+        }
+
+        // 停止可视化
+        function stopVisualization() {
+            isVisualizing = false;
+            showMessage('visualMessage', '演示已停止', 'error');
+        }
+
+        // 重置数组
+        function resetArray() {
+            isVisualizing = false;
+            currentArray = [...originalArray];
+            compareCount = 0;
+            swapCount = 0;
+            stepCount = 0;
+            visualizeArray();
+            updateStats();
+            showMessage('visualMessage', '数组已重置', 'info');
+        }
+
+        // 显示消息
+        function showMessage(elementId, message, type) {
+            const messageEl = document.getElementById(elementId);
+            messageEl.textContent = message;
+            messageEl.className = `message ${type}`;
+            messageEl.style.display = 'block';
+            
+            setTimeout(() => {
+                messageEl.style.display = 'none';
+            }, 3000);
+        }
+
+        // 速度滑块事件
+        document.getElementById('speedSlider').addEventListener('input', function(e) {
+            visualizationSpeed = parseInt(e.target.value);
+            document.getElementById('speedValue').textContent = visualizationSpeed + 'ms';
+        });
+
+        // 检查答案
+        function checkAnswers() {
+            const answers = {
+                q1: 'b', // 冒泡法和插入法
+                q2: 'a', // 选择法不稳定
+                q3: 'c'  // 插入法对基本有序数组效率最高
+            };
+            
+            let score = 0;
+            const total = Object.keys(answers).length;
+            
+            for (let question in answers) {
+                const selected = document.querySelector(`input[name="${question}"]:checked`);
+                if (selected && selected.value === answers[question]) {
+                    score++;
+                }
+            }
+            
+            const percentage = (score / total) * 100;
+            let message = `你答对了 ${score}/${total} 题，得分：${percentage}%`;
+            let type = percentage >= 60 ? 'success' : 'error';
+            
+            if (percentage === 100) {
+                message += ' 🎉 完美！';
+            } else if (percentage >= 80) {
+                message += ' 👍 很好！';
+            } else if (percentage >= 60) {
+                message += ' 💪 继续努力！';
+            } else {
+                message += ' 📚 需要更多练习！';
+            }
+            
+            showMessage('quizMessage', message, type);
+        }
+
+        // 重置测验
+        function resetQuiz() {
+            const radios = document.querySelectorAll('input[type="radio"]');
+            radios.forEach(radio => radio.checked = false);
+            document.getElementById('quizMessage').style.display = 'none';
+        }
+
+        // 初始化
+        window.onload = function() {
+            generateRandomArray();
+        };
+    </script>
+</body>
+</html>

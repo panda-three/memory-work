@@ -1,0 +1,53 @@
+1.从键盘上输入一个数，如果这个数是偶数，输出结果是1，否则是0。
+#include <stdio.h>
+int main()
+{
+int x;
+//
+printf("%d", //);
+    return 0; 
+}
+
+2.从键盘上输入一个字符，若是大写字母转换为小写字母，
+若是小写字母转换为大写字母。
+#include <stdio.h>
+int main()
+{
+	char c;
+	//
+	if(c>='A'&&c<='Z')
+	//
+	else if(//)
+	c=c-32;
+	printf("%c",c);
+	return 0;
+}
+3.键盘输入某年并判断是否为闰年？
+ #include <stdio.h>
+  int main() {
+      int x,f=0;
+      scanf("%d", &x);
+
+      if (//) {
+          f=1;
+      } 
+      if(//)
+        printf("%d是闰年！",x);
+      else
+         printf("%d不是闰年！",x);
+      return 0;
+  }
+4.从键盘上输入任意字符且判断其种类。如果是字母则输出提示“是字母”，
+如果是数字则输出提示“是数字”，如果都不是则输出提示“是其他字符”。
+ #include <stdio.h>
+  int main() {
+               char c;
+	//
+	if(//)
+	printf("%c 是字母！",c);
+	else if(//)
+	printf("%c 是数字！",c);
+	else
+	printf("%c 是其他字符！",c);
+                return 0;
+  }

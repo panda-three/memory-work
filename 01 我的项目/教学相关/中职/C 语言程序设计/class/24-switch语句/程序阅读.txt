@@ -1,0 +1,178 @@
+1.
+#include <stdio.h>
+int main() {
+    int x=2;
+	switch(x)
+	{
+	case 1:printf("%d",x++);
+	case 2:printf("%d",x++);
+	case 3:printf("%d",x++);
+	default:printf("%d",x++);
+	}
+    return 0;
+	  
+}
+2.
+#include <stdio.h>
+int main() {
+  int x=2;
+  switch(x)
+ {
+	case 1:printf("%d",x++);
+	case 2:printf("%d",x++);
+	case 3:printf("%d",x++);
+	break;
+	default:printf("%d",x++);
+ }
+   return 0;
+	  
+}
+3.
+#include <stdio.h>
+int main() {
+    int x=1;
+	switch(x)
+	{
+		case 1:case 2:printf("%d",x++);
+		case 3:printf("%d",x++);
+		default:printf("%d",x++);
+	}
+    return 0;
+	  
+}
+4.
+#include <stdio.h>
+int main() {
+	int k=9;
+	switch(k--)
+	{
+		default:printf("%d",k++);
+		case 8:
+		case 6:printf("%d",k);break;
+		case 4:printf("%d",k++);
+		case 2:printf("%d",k);
+	}
+	 
+    return 0;
+	  
+}
+5.
+#include <stdio.h>
+int main() {
+	int m=1,n=0;
+	int a=8,b=9;
+	switch(m)
+	{
+		case 1:switch(n)
+		{
+			case 0:a+=2;break;
+			case 1:b++;break;
+		}
+		case 2:a++;b++;break;
+		case 3:a++;b++;
+	}
+	printf("a=%d,b=%d\n",a,b);
+	 
+    return 0;
+	  
+}
+6.从键盘上任意输入0～100间的成绩并判断其所在等级。90分及以上为A等级，80分及以上为B等级，
+70分及以上为C等级，60分及以上为D等级，60分到0分E等级。如果输入不正确的成绩，提示显示“请重新输入成绩！”
+#include <stdio.h>
+int main() {
+    int x;
+	printf("请输入要判断等级的成绩(0～100)：");
+    //
+	if(x<0||x>100)
+	//
+	switch(//)
+	{
+		case 10:
+		case 9:printf("%d 分为 A 等级",x);break;
+		case 8:printf("%d 分为 B 等级",x);break;
+		case 7:printf("%d 分为 C 等级",x);break;
+		case 6:printf("%d 分为 D 等级",x);break;
+		case 5:case 4: case 3: case 2: case 1:
+		case 0: //  break;
+	}
+   
+    return 0;
+	  
+}
+
+7.
+#include <stdio.h>
+int main() {
+    int x=1,a=2,b=3;
+	switch(x)
+	{
+		case 0:a++;b++;
+		case 2:a++;b++;
+		default:a++;b++; 
+	}
+	printf("a=%d,b=%d",a,b);
+   
+    return 0;
+	  
+}
+
+8.
+#include <stdio.h>
+int main() {
+    int x=2;
+	switch(x)
+	{
+		case 1:printf("%d",--x);break;
+		case 2:printf("%d",x--);
+		case 3:printf("%d",--x);break;
+		default:printf("%d",x--);
+	}
+    return 0;	  
+}
+
+9.
+#include <stdio.h>
+int main() {
+    int k=9;
+	switch(k--)
+	{
+		default:printf("%d ",k++);
+		case 8:
+		case 7:printf("%d ",k);break;
+		case 6:printf("%d ",k++);
+		case 5:printf("%d ",k);
+	}
+    return 0;	  
+}
+
+10.输入某年某月某日，判断这一天是这一年的第几天？
+#include <stdio.h>
+int main() {
+	int day,month,year,sum,leap;
+	printf("please input year,month,day");
+	scanf("%d%d%d",&year,&month,&day);
+	switch(month)
+	{
+		case 1:sum=0;break;
+		case 2:sum=31;break;
+		case 3:sum=59;break;
+		case 4:  //?  ;break;
+		case 5:sum=120;break;
+		case 6:sum=151;break;
+		case 7:sum=181;break;
+		case 8:sum=212;break;
+		case 9:sum=243;break;
+		case 10:sum=273;break;
+		case 11:sum=304;break;
+		case 12:sum=334;break;
+		default:printf("data error");break;
+	}
+//	?
+	if(?)
+	leap=1;
+	else
+	leap=0;
+	if(//？) sum++;
+	printf("It is the %dth day.",sum);
+    return 0;	  
+}

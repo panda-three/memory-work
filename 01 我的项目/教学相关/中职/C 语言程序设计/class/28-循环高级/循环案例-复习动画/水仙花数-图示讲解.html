@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>水仙花数 - 图示讲解</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #f5576c;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.2em;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #f5576c;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .step-box {
+            background: white;
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .step-number {
+            display: inline-block;
+            background: #f5576c;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 35px;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-family: "Consolas", "Monaco", monospace;
+            font-size: 1.1em;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+
+        .code-keyword {
+            color: #f92672;
+        }
+
+        .code-function {
+            color: #66d9ef;
+        }
+
+        .code-string {
+            color: #e6db74;
+        }
+
+        .code-number {
+            color: #ae81ff;
+        }
+
+        .code-comment {
+            color: #75715e;
+        }
+
+        .example-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            font-size: 1.2em;
+            line-height: 2;
+        }
+
+        .example-large {
+            font-size: 2em;
+            font-weight: bold;
+            text-align: center;
+            margin: 15px 0;
+            color: #ffeb3b;
+        }
+
+        .visual-breakdown {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: #fff3e0;
+            border-radius: 15px;
+        }
+
+        .digit-box {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .digit {
+            font-size: 3em;
+            font-weight: bold;
+            color: #f5576c;
+            background: white;
+            width: 80px;
+            height: 80px;
+            line-height: 80px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            margin-bottom: 10px;
+        }
+
+        .digit-label {
+            font-size: 1.1em;
+            color: #666;
+            font-weight: bold;
+        }
+
+        .calculation-flow {
+            background: #e3f2fd;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-size: 1.2em;
+        }
+
+        .calc-step {
+            padding: 10px;
+            margin: 5px 0;
+            border-left: 3px solid #2196f3;
+            padding-left: 15px;
+        }
+
+        .highlight {
+            background: #ffeb3b;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .trace-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .trace-table th {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 1.1em;
+        }
+
+        .trace-table td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        .trace-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .trace-table tr:hover {
+            background: #fff3cd;
+        }
+
+        .is-narcissistic {
+            background: #c8e6c9 !important;
+            font-weight: bold;
+        }
+
+        .key-point {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            font-size: 1.1em;
+        }
+
+        .formula {
+            text-align: center;
+            font-size: 1.5em;
+            margin: 20px 0;
+            padding: 15px;
+            background: white;
+            border: 3px dashed #f5576c;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .life-example {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            margin: 20px 0;
+            font-size: 1.2em;
+            line-height: 1.8;
+        }
+
+        .btn {
+            background: #f5576c;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin: 10px;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(245, 87, 108, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌸 水仙花数详解</h1>
+        <p class="subtitle">100~999之间的"魔法数字"</p>
+
+        <!-- 什么是水仙花数 -->
+        <div class="section">
+            <div class="section-title">一、什么是水仙花数？</div>
+
+            <div class="example-box">
+                <strong>定义：</strong>三位数，各位数字的立方和等于该数本身
+                <div class="example-large">153 = 1³ + 5³ + 3³</div>
+            </div>
+
+            <div class="life-example">
+                <strong>生活类比：</strong>
+                <br>就像拼图游戏：
+                <br>• 你有一个数字"153"
+                <br>• 把它拆成3块：1、5、3
+                <br>• 每块都变成立方体：1³、5³、3³
+                <br>• 把这3个立方体加起来，神奇地又变回了原数字153！
+            </div>
+
+            <div class="visual-breakdown">
+                <div class="digit-box">
+                    <div class="digit">1</div>
+                    <div class="digit-label">百位</div>
+                    <div>1³ = 1</div>
+                </div>
+                <div style="font-size: 2em; color: #666;">+</div>
+                <div class="digit-box">
+                    <div class="digit">5</div>
+                    <div class="digit-label">十位</div>
+                    <div>5³ = 125</div>
+                </div>
+                <div style="font-size: 2em; color: #666;">+</div>
+                <div class="digit-box">
+                    <div class="digit">3</div>
+                    <div class="digit-label">个位</div>
+                    <div>3³ = 27</div>
+                </div>
+                <div style="font-size: 2em; color: #666;">=</div>
+                <div class="digit-box">
+                    <div class="digit" style="width: auto; padding: 0 20px;">153</div>
+                    <div class="digit-label">原数字</div>
+                </div>
+            </div>
+
+            <div class="calculation-flow">
+                <strong>验证过程：</strong>
+                <div class="calc-step">① 1³ = 1 × 1 × 1 = 1</div>
+                <div class="calc-step">② 5³ = 5 × 5 × 5 = 125</div>
+                <div class="calc-step">③ 3³ = 3 × 3 × 3 = 27</div>
+                <div class="calc-step" style="border-color: #f5576c; font-weight: bold; font-size: 1.2em;">
+                    ④ 1 + 125 + 27 = <span class="highlight">153</span> ✓ 等于原数字！
+                </div>
+            </div>
+        </div>
+
+        <!-- 如何分离数字的各个位 -->
+        <div class="section">
+            <div class="section-title">二、核心技能：如何拆分数字？</div>
+
+            <div class="key-point">
+                <strong>问题：</strong>给你一个数字153，怎么用代码得到百位1、十位5、个位3？
+            </div>
+
+            <div class="example-box">
+                <strong>方法：除法和取余</strong>
+                <div style="margin-top: 15px;">
+                    <div><strong>个位 =</strong> 数字 % 10</div>
+                    <div><strong>十位 =</strong> 数字 / 10 % 10</div>
+                    <div><strong>百位 =</strong> 数字 / 100 % 10</div>
+                </div>
+            </div>
+
+            <div class="step-box">
+                <div class="step-number">1</div>
+                <strong>获取个位数字</strong>
+                <div class="code-block">
+<span class="code-keyword">int</span> num = <span class="code-number">153</span>;
+<span class="code-keyword">int</span> ge = num % <span class="code-number">10</span>;  <span class="code-comment">// 153 % 10 = 3</span>
+                </div>
+                <div class="calculation-flow">
+                    <strong>原理：</strong>
+                    <div>153 ÷ 10 = 15 ... 余数<span class="highlight">3</span></div>
+                    <div>% 运算符就是取余数，所以 153 % 10 = 3</div>
+                </div>
+            </div>
+
+            <div class="step-box">
+                <div class="step-number">2</div>
+                <strong>获取十位数字</strong>
+                <div class="code-block">
+<span class="code-keyword">int</span> shi = num / <span class="code-number">10</span> % <span class="code-number">10</span>;  <span class="code-comment">// 先除10变成15，再%10得到5</span>
+                </div>
+                <div class="calculation-flow">
+                    <strong>分步执行：</strong>
+                    <div>① 先除以10：153 / 10 = <span class="highlight">15</span></div>
+                    <div>② 再取余10：15 % 10 = <span class="highlight">5</span></div>
+                </div>
+            </div>
+
+            <div class="step-box">
+                <div class="step-number">3</div>
+                <strong>获取百位数字</strong>
+                <div class="code-block">
+<span class="code-keyword">int</span> bai = num / <span class="code-number">100</span> % <span class="code-number">10</span>;  <span class="code-comment">// 先除100变成1，再%10得到1</span>
+                </div>
+                <div class="calculation-flow">
+                    <strong>分步执行：</strong>
+                    <div>① 先除以100：153 / 100 = <span class="highlight">1</span></div>
+                    <div>② 再取余10：1 % 10 = <span class="highlight">1</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 完整代码 -->
+        <div class="section">
+            <div class="section-title">三、完整代码实现</div>
+
+            <div class="code-block">
+<span class="code-comment">// 打印所有水仙花数（100~999）</span>
+<span class="code-keyword">#include</span> <span class="code-string">&lt;stdio.h&gt;</span>
+
+<span class="code-keyword">int</span> <span class="code-function">main</span>() {
+    <span class="code-function">printf</span>(<span class="code-string">"100~999之间的水仙花数有：\n"</span>);
+
+    <span class="code-comment">// 遍历所有三位数</span>
+    <span class="code-keyword">for</span> (<span class="code-keyword">int</span> i = <span class="code-number">100</span>; i &lt;= <span class="code-number">999</span>; i++) {
+        <span class="code-comment">// 步骤1：分离各个位的数字</span>
+        <span class="code-keyword">int</span> ge = i % <span class="code-number">10</span>;           <span class="code-comment">// 个位</span>
+        <span class="code-keyword">int</span> shi = i / <span class="code-number">10</span> % <span class="code-number">10</span>;      <span class="code-comment">// 十位</span>
+        <span class="code-keyword">int</span> bai = i / <span class="code-number">100</span> % <span class="code-number">10</span>;     <span class="code-comment">// 百位</span>
+
+        <span class="code-comment">// 步骤2：计算立方和</span>
+        <span class="code-keyword">int</span> sum = bai*bai*bai + shi*shi*shi + ge*ge*ge;
+
+        <span class="code-comment">// 步骤3：判断是否等于原数字</span>
+        <span class="code-keyword">if</span> (sum == i) {
+            <span class="code-function">printf</span>(<span class="code-string">"%d = %d³ + %d³ + %d³\n"</span>, i, bai, shi, ge);
+        }
+    }
+
+    <span class="code-keyword">return</span> <span class="code-number">0</span>;
+}
+            </div>
+        </div>
+
+        <!-- 追踪表 -->
+        <div class="section">
+            <div class="section-title">四、执行过程追踪表</div>
+
+            <div class="key-point">
+                下面列出几个关键数字的检查过程（不是所有900个数字都列出）
+            </div>
+
+            <table class="trace-table">
+                <thead>
+                    <tr>
+                        <th>i</th>
+                        <th>百位(bai)</th>
+                        <th>十位(shi)</th>
+                        <th>个位(ge)</th>
+                        <th>立方和计算</th>
+                        <th>sum</th>
+                        <th>sum==i?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>100</td>
+                        <td>1</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>1³+0³+0³</td>
+                        <td>1</td>
+                        <td>✗ 假</td>
+                    </tr>
+                    <tr>
+                        <td>123</td>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>1³+2³+3³</td>
+                        <td>1+8+27=36</td>
+                        <td>✗ 假</td>
+                    </tr>
+                    <tr class="is-narcissistic">
+                        <td><strong>153</strong></td>
+                        <td>1</td>
+                        <td>5</td>
+                        <td>3</td>
+                        <td>1³+5³+3³</td>
+                        <td>1+125+27=<strong>153</strong></td>
+                        <td style="color: green; font-weight: bold;">✓ 真！</td>
+                    </tr>
+                    <tr>
+                        <td>200</td>
+                        <td>2</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>2³+0³+0³</td>
+                        <td>8</td>
+                        <td>✗ 假</td>
+                    </tr>
+                    <tr class="is-narcissistic">
+                        <td><strong>370</strong></td>
+                        <td>3</td>
+                        <td>7</td>
+                        <td>0</td>
+                        <td>3³+7³+0³</td>
+                        <td>27+343+0=<strong>370</strong></td>
+                        <td style="color: green; font-weight: bold;">✓ 真！</td>
+                    </tr>
+                    <tr class="is-narcissistic">
+                        <td><strong>371</strong></td>
+                        <td>3</td>
+                        <td>7</td>
+                        <td>1</td>
+                        <td>3³+7³+1³</td>
+                        <td>27+343+1=<strong>371</strong></td>
+                        <td style="color: green; font-weight: bold;">✓ 真！</td>
+                    </tr>
+                    <tr class="is-narcissistic">
+                        <td><strong>407</strong></td>
+                        <td>4</td>
+                        <td>0</td>
+                        <td>7</td>
+                        <td>4³+0³+7³</td>
+                        <td>64+0+343=<strong>407</strong></td>
+                        <td style="color: green; font-weight: bold;">✓ 真！</td>
+                    </tr>
+                    <tr>
+                        <td>500</td>
+                        <td>5</td>
+                        <td>0</td>
+                        <td>0</td>
+                        <td>5³+0³+0³</td>
+                        <td>125</td>
+                        <td>✗ 假</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="example-box">
+                <strong>答案：</strong>100~999之间共有4个水仙花数
+                <div class="example-large">153、370、371、407</div>
+            </div>
+        </div>
+
+        <!-- 学习建议 -->
+        <div class="section">
+            <div class="section-title">五、学习建议</div>
+
+            <div class="step-box">
+                <div class="step-number">1</div>
+                <strong>先理解"分离数字"</strong>
+                <p>在纸上手工计算几次：</p>
+                <ul style="margin-left: 30px; margin-top: 10px;">
+                    <li>123的个位是多少？123 % 10 = ?</li>
+                    <li>123的十位是多少？123 / 10 % 10 = ?</li>
+                    <li>123的百位是多少？123 / 100 % 10 = ?</li>
+                </ul>
+            </div>
+
+            <div class="step-box">
+                <div class="step-number">2</div>
+                <strong>验证一个具体的例子</strong>
+                <p>手工验证153是水仙花数：</p>
+                <ul style="margin-left: 30px; margin-top: 10px;">
+                    <li>拆分：百位=1，十位=5，个位=3</li>
+                    <li>计算：1³=1，5³=125，3³=27</li>
+                    <li>求和：1+125+27=153 ✓</li>
+                </ul>
+            </div>
+
+            <div class="step-box">
+                <div class="step-number">3</div>
+                <strong>理解循环的作用</strong>
+                <p>循环从100到999，逐个检查每个三位数</p>
+            </div>
+
+            <div class="step-box">
+                <div class="step-number">4</div>
+                <strong>自己动手写代码</strong>
+                <p>照着例子敲一遍代码，运行看结果</p>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; padding: 30px; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); border-radius: 15px; color: white;">
+            <h2 style="margin-bottom: 15px;">🎯 核心要点</h2>
+            <p style="font-size: 1.2em; line-height: 2;">
+                <strong>①</strong> 水仙花数 = 各位数字立方和等于原数字<br>
+                <strong>②</strong> 分离数字用 % 和 / 运算符<br>
+                <strong>③</strong> 循环遍历100~999所有三位数<br>
+                <strong>④</strong> 答案：153、370、371、407
+            </p>
+        </div>
+    </div>
+</body>
+</html>

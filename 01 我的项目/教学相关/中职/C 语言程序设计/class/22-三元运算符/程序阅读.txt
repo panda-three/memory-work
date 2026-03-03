@@ -1,0 +1,86 @@
+1.
+#include <stdio.h>
+int main()
+{
+    int x,y;
+    x=5;
+    y=6;
+    printf("%d%d\n",x,y);
+    x=x+y; 
+    y=x-y;  
+    x=x-y;  
+    printf("%d%d\n",x,y); 
+    return 0; 
+}
+2.
+#include <stdio.h>
+int main()
+{
+    int x=4,y=5,z=6;
+    printf("%d%d%d\n",x,y,z); 
+    x+=y+=z++; 
+    printf("%d%d%d\n",x,y,z); 
+    printf("%d\n",z=x<y?x:y);
+    printf("%d%d%d\n",x,y,z); 
+    return 0; 
+}
+
+3.
+#include <stdio.h>
+int main()
+{
+    int x,y,z;
+    x=y=z=1;
+    printf("x=%d,y=%d,z=%d\n",x,y,z); 
+    x++&&--y&&z++; 
+    printf("x=%d,y=%d,z=%d\n",x,y,z);
+    x=y=z=-1; 
+    ++x||y++&&--z; 
+    printf("x=%d,y=%d,z=%d\n",x,y,z); 
+    return 0; 
+}
+4.
+#include <stdio.h>
+int main()
+{
+    float x=1.23456,y=1.2356;
+    printf("1234567890\n"); 
+    printf("%5.2f,%5.2f\n",x,y); 
+    return 0; 
+}
+5.
+#include <stdio.h>
+int main()
+{
+    int a,b,x,y;
+    scanf("%d,%d",&a,&b);
+    x=a+1,b+6;
+    y=(a+1,b+6);
+    printf("x=%d\ny=%d\n",x,y);
+    return 0; 
+}
+当输入3,4时，运行结果：
+
+6.
+#include <stdio.h>
+int main()
+{
+    int a,b,c;
+    scanf("%d,%d",&a,&b);
+    c=a>b? a:b;
+    printf("c=%d\n",c);
+    return 0; 
+}
+当输入30,40时，运行结果：
+
+7.
+#include <stdio.h>
+int main()
+{
+    char a,b,c;
+    scanf("%c%c%c",&a,&b,&c);
+    printf("%c%c%c",a,b,c);
+    return 0; 
+}
+当输入Iam,运行结果：
+当输入I am，运行结果为：

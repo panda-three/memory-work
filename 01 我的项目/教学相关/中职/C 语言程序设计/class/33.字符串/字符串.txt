@@ -1,0 +1,99 @@
+一、填空题（每题2分，共12分）
+1.欲为字符串s1输入"HelloWorld!"，其输入语句是 ________________。
+2.欲将字符串s1复制到字符串s2中，其语句是 ________________。
+3.如果在程序中调用了strcat函数，则需要预处理命令 ________________。如果调用了gets函数，则需 ________________。
+4.执行语句序列：char s[]="abcdef"; s[3]='\0'; puts(s); 为 _______________。
+
+二.程序阅读题
+1.#include <stdio.h>
+#include <string.h>
+main() {
+    char a[7]="abcdef";
+    char b[4]="ABC";
+    strcpy(a,b);
+    printf("%c", a[5]);
+} 
+2.#include<stdio.h>
+#include<string.h>
+void main() {
+    char str[12]={'s','t','r','i','n','g'};
+    printf("%d\n", strlen(str));
+}
+
+3.当执行下面的程序时，假设输入ABC，则写出程序的运行结果 
+#include<stdio.h>
+#include<string.h>
+main() {
+    char ss[10]="12345";
+    gets(ss);        
+    strcat(ss,"6789");
+    printf("%s\n", ss);
+}
+
+4.当执行下面的程序时，假设输入AabD，则写出程序的运行结果 
+main() {
+    char s[80];
+    int i=0;
+    gets(s);
+    while(s[i] != '\0') {
+        if(s[i] <= 'z' && s[i] >= 'a')
+            s[i] = s[i] - 'a' + 'A';
+        i++;
+    }
+    puts(s);
+}
+5.#include<stdio.h>
+#include<string.h>
+void main()
+{
+    char str1[]="*******";
+    int i;
+    for(i=0;i<4;i++){
+    	printf("%s\n",str1);
+	    str1[i]=' ';
+	    str1[strlen(str1)-1]='\0';
+	}
+}
+6.#include <stdio.h>
+void main()
+{
+    char ch[3][5]={"AAAA","BBB","CC"};
+    printf("\"%s\"\n",ch[1]);
+}
+7.#include<stdio.h>
+void main()
+{
+    char b[]="Hello,job";
+    b[5]='\0';
+    printf("%s\n",b);
+}
+8.#include<stdio.h>
+main()
+{
+    int i=0;
+    char a[]="abm",b[]="aqid",c[10];
+    while (a[i]!='\0'&&b[i]!='\0')
+    {
+        if (a[i]>=b[i]) c[i]=a[i]-32;
+        else c[i]=b[i]-32;
+        i++;
+    }
+    c[i]='\0';
+    puts(c);
+}
+9.#include<stdio.h>
+main()
+{
+    char str[]="SSWLIA",c;
+    int k;
+    for (k=2;(c=str[k])!='\0';++k)
+    {
+        switch (c)
+        {
+            case'I': ++k;break;
+            case'L': continue;
+            default: putchar(c); continue;
+        }
+        putchar('*');
+    }
+}

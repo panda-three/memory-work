@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>练习3：统计满足条件的数字</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+        }
+        .main { flex: 1; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
+        .sidebar { width: 260px; background: rgba(255,255,255,0.95); padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+        h1 { color: white; font-size: 1.7em; text-align: center; }
+        .panel { background: white; border-radius: 12px; padding: 15px; flex: 1; }
+        .code { background: #2d3748; color: #f7fafc; padding: 10px; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 0.9em; }
+        .code-line { padding: 2px 6px; border-radius: 4px; }
+        .code-line.hl { background: #00f2fe; color: #000; font-weight: bold; }
+        .vars { display: flex; gap: 10px; margin: 10px 0; }
+        .vb { flex: 1; padding: 12px; background: #f0f0f0; border: 3px solid #00f2fe; border-radius: 8px; text-align: center; font-size: 1.2em; font-weight: bold; }
+        .vb.ch { background: #ffd93d; transform: scale(1.05); }
+        .nums { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0; }
+        .num { background: #00f2fe; color: white; padding: 8px 15px; border-radius: 8px; font-weight: bold; }
+        button { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: #000; border: none; padding: 12px; font-size: 1em; border-radius: 25px; cursor: pointer; font-weight: bold; }
+        button:hover { transform: translateY(-2px); }
+        .info { background: #f8f9fa; padding: 10px; border-radius: 8px; font-size: 0.85em; }
+        .status { background: #e6f2ff; padding: 10px; border-radius: 8px; border-left: 4px solid #00f2fe; font-size: 1em; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <h1>练习3：统计既能被6又能被8整除的数字(1-100)</h1>
+
+        <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 15px; flex: 1;">
+            <div class="panel">
+                <h3 style="color: #00f2fe; margin-bottom: 8px;">代码</h3>
+                <div class="code">
+                    <div class="code-line" id="l1">int count = 0, i = 1;</div>
+                    <div class="code-line" id="l2">while (i &lt;= 100) {</div>
+                    <div class="code-line" id="l3">&nbsp;&nbsp;if (i%6==0 && i%8==0) {</div>
+                    <div class="code-line" id="l4">&nbsp;&nbsp;&nbsp;&nbsp;printf("%d ", i);</div>
+                    <div class="code-line" id="l5">&nbsp;&nbsp;&nbsp;&nbsp;count++;</div>
+                    <div class="code-line" id="l6">&nbsp;&nbsp;}</div>
+                    <div class="code-line" id="l7">&nbsp;&nbsp;i++;</div>
+                    <div class="code-line" id="l8">}</div>
+                </div>
+                <div class="vars">
+                    <div class="vb" id="vi">i = ?</div>
+                    <div class="vb" id="vc">count = ?</div>
+                </div>
+                <div class="status" id="st">未开始</div>
+            </div>
+
+            <div class="panel">
+                <h3 style="color: #00f2fe; margin-bottom: 8px;">找到的数字</h3>
+                <div class="nums" id="nums"></div>
+                <div class="info" style="margin-top: auto;">
+                    <strong>提示：</strong>既能被6又能被8整除 = 能被24整除<br>
+                    因为 LCM(6,8) = 24
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <h3 style="color: #00f2fe; text-align: center;">控制</h3>
+        <button onclick="auto()">快速演示</button>
+        <button onclick="step()">单步</button>
+        <button onclick="reset()">重置</button>
+        <hr>
+        <div class="info">
+            <h4 style="color: #00f2fe;">知识点</h4>
+            <ul style="padding-left: 18px; font-size: 0.9em;">
+                <li>取余: i%6==0</li>
+                <li>逻辑与: &&</li>
+                <li>计数: count++</li>
+                <li>范围1-100</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        let i, count, s, found = [];
+
+        function hl(id) {
+            document.querySelectorAll('.code-line').forEach(el => el.classList.remove('hl'));
+            if (id) document.getElementById(id).classList.add('hl');
+        }
+
+        function upd() {
+            document.getElementById('vi').textContent = `i = ${i}`;
+            document.getElementById('vc').textContent = `count = ${count}`;
+        }
+
+        function add(n) {
+            found.push(n);
+            const div = document.createElement('div');
+            div.className = 'num';
+            div.textContent = n;
+            document.getElementById('nums').appendChild(div);
+        }
+
+        function step() {
+            if (s === 0) { i = 1; count = 0; s++; hl('l1'); upd(); document.getElementById('st').textContent = '初始化'; return; }
+
+            if (i <= 100) {
+                const sub = (s - 1) % 3;
+                if (sub === 0) {
+                    hl('l3');
+                    const ok = (i % 6 === 0 && i % 8 === 0);
+                    document.getElementById('st').textContent = `检查${i}: ${i}%6=${i%6}, ${i}%8=${i%8} → ${ok?'满足':'不满足'}`;
+                } else if (sub === 1) {
+                    if (i % 6 === 0 && i % 8 === 0) {
+                        hl('l5');
+                        count++;
+                        add(i);
+                        document.getElementById('st').textContent = `找到${i}！count=${count}`;
+                        upd();
+                    }
+                } else {
+                    hl('l7');
+                    i++;
+                    upd();
+                }
+                s++;
+            } else {
+                hl('l2');
+                document.getElementById('st').textContent = `完成！共${count}个：${found.join(',')}`;
+                s = -1;
+            }
+        }
+
+        function auto() {
+            reset();
+            const t = setInterval(() => {
+                if (s !== -1 && i <= 100) step();
+                else clearInterval(t);
+            }, 80);
+        }
+
+        function reset() {
+            i = 1; count = 0; s = 0; found = [];
+            document.getElementById('vi').textContent = 'i = ?';
+            document.getElementById('vc').textContent = 'count = ?';
+            document.getElementById('st').textContent = '已重置';
+            document.getElementById('nums').innerHTML = '';
+            hl(null);
+        }
+
+        window.onload = reset;
+    </script>
+</body>
+</html>

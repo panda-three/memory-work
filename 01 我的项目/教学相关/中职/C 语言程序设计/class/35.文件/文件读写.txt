@@ -1,0 +1,142 @@
+程序阅读题
+1.#include <stdio.h>
+void main()
+{
+    FILE *fp;
+    int i=20,j=30,k,n;
+    fp=fopen("d1.dat","w");
+    fprintf(fp,"%d\n",i);
+    fprintf(fp,"%d\n",j);
+    fclose(fp);
+
+    fp=fopen("d1.dat","r");
+    fscanf(fp,"%d%d",&k,&n);
+    printf("%d%d\n",k,n);
+    fclose(fp);
+}
+
+2.#include "stdio.h"
+#include <stdio.h>
+void WriteStr(char fn[],char str[])
+{
+   FILE *fp;
+fp=fopen(fn,"w");
+fputs(str,fp);
+fclose(fp);
+}
+
+void main()
+{
+    WriteStr("t1.dat","start");
+    WriteStr("t1.dat","end");
+}
+三、程序填空题（每空 3 分，共 15 分）
+1. 以下程序用来统计文件中字符个数。请将程序填充完整
+#include <stdio.h>
+void main()
+{
+    FILE  (1) _________;
+    long  num=0L;
+    if((fp=fopen("abc.txt","r"))==NULL)
+    {
+        printf("Open error"); exit(0);
+    }
+    while(!feof(fp))
+    {
+        (2) _________;
+        num++;
+    }
+    printf("num=%ld",num);
+    (3) _________;
+}
+2. 以下程序由终端输入一个文件名，然后把从终端键盘输入的字符依次存放到该文件中，用#作为结束输入的标志。请将程序填充完整
+#include<stdio.h>
+void main()
+{
+    FILE *fp;
+    char ch,fname[10];
+    printf("Input the name of file");
+    gets(fname);
+    if( (1) _________ )==NULL)
+    {
+        printf("Cannot open");
+        exit(0);
+    }
+    printf("Enter data");
+    while((ch=getchar())!='#')
+    (2) _________；
+    fclose(fp);
+}
+    
+#include<stdio.h>
+main()
+{
+    FILE *fp;
+    char str[100];
+    int i=0;
+    if((fp=fopen("test.txt", (1) ______))==NULL)
+    {
+        printf("can't open this file.\n");exit(0);
+    }
+    printf("input a string:\n");
+    gets(str);
+    while(str[i])
+    {
+        if(str[i]>='a' && str[i]<='z')
+            str[i] = (2) ______;  // 小写转大写
+        fputc(str[i],fp);
+        i++;
+    }
+    fclose(fp);
+    fp=fopen("test.txt", (3) ______);  // 读模式打开文件
+    gets((4) ______);  // 从文件读取字符串
+    printf("%s\n",str);
+    fclose(fp);
+}
+
+（功能：小写转大写后读写文件）
+```c
+#include<stdio.h>
+main()
+{
+    FILE *fp;
+    char str[100];
+    int i=0;
+    if((fp=fopen("test.txt", (1) ______))==NULL)
+    {
+        printf("can't open this file.\n");exit(0);
+    }
+    printf("input a string:\n");
+    gets(str);
+    while(str[i])
+    {
+        if(str[i]>='a' && str[i]<='z')
+            str[i] = (2) ______;  // 小写转大写
+        fputc(str[i],fp);
+        i++;
+    }
+    fclose(fp);
+    fp=fopen("test.txt", (3) ______);  // 读模式打开文件
+    gets((4) ______);  // 从文件读取字符串
+    printf("%s\n",str);
+    fclose(fp);
+}
+```
+
+
+程序3（功能：将abc.dat的字符追加到xyz.dat）
+#include <stdio.h>
+#include <stdlib.h>
+void main()
+{
+    (1) ______ *fp1, *fp2;  // 定义文件指针
+    if(((fp1=fopen("abc.dat","r")) (2) ______ NULL)||
+       ((fp2=fopen("xyz.dat","a"))==NULL))
+    {
+        printf("文件打开错误！\n"); exit(0);
+    }
+    while(!feof(fp1))
+        fputc(fgetc(fp1), (3) ______);  // 写入目标文件
+    (4) ______;  // 关闭源文件
+    fclose(fp2);
+}

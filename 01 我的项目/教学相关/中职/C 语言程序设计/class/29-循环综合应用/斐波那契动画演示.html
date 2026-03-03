@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>斐波那契数列 - 三变量滚动法演示</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Microsoft YaHei", Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 900px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        /* 变量区域 */
+        .variables {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 40px;
+            gap: 20px;
+        }
+
+        .var-box {
+            flex: 1;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .var-box.highlight {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.5);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .var-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-family: "Consolas", monospace;
+        }
+
+        .var-value {
+            font-size: 3em;
+            font-weight: bold;
+            color: #667eea;
+            font-family: "Consolas", monospace;
+        }
+
+        .var-box.highlight .var-value {
+            color: #fff;
+        }
+
+        .var-desc {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .var-box.highlight .var-desc {
+            color: #fff;
+        }
+
+        /* 代码区域 */
+        .code-section {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            font-family: "Consolas", monospace;
+            font-size: 1em;
+            line-height: 1.8;
+            overflow-x: auto;
+        }
+
+        .code-line {
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .code-line.active {
+            background: #264f78;
+            border-left: 4px solid #00ff00;
+            padding-left: 6px;
+        }
+
+        .keyword { color: #569cd6; }
+        .string { color: #ce9178; }
+        .number { color: #b5cea8; }
+        .comment { color: #6a9955; }
+        .function { color: #dcdcaa; }
+
+        /* 输出区域 */
+        .output-section {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .output-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .output-content {
+            background: white;
+            border: 2px solid #667eea;
+            border-radius: 5px;
+            padding: 15px;
+            font-family: "Consolas", monospace;
+            font-size: 1.3em;
+            min-height: 60px;
+            color: #333;
+        }
+
+        .output-number {
+            display: inline-block;
+            margin: 5px;
+            padding: 5px 10px;
+            background: #667eea;
+            color: white;
+            border-radius: 5px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 状态信息 */
+        .status {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+            font-size: 1.1em;
+        }
+
+        .status strong {
+            color: #856404;
+        }
+
+        /* 控制按钮 */
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(0,0,0,0.3);
+        }
+
+        .btn-start {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-next {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        .btn-reset {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* 说明文字 */
+        .explanation {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+            font-size: 1em;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔢 斐波那契数列演示</h1>
+        <p class="subtitle">三变量滚动法 - 动态可视化</p>
+
+        <!-- 变量区域 -->
+        <div class="variables">
+            <div class="var-box" id="f1-box">
+                <div class="var-name">f1</div>
+                <div class="var-value" id="f1-value">1</div>
+                <div class="var-desc">当前项</div>
+            </div>
+            <div class="var-box" id="f2-box">
+                <div class="var-name">f2</div>
+                <div class="var-value" id="f2-value">1</div>
+                <div class="var-desc">下一项</div>
+            </div>
+            <div class="var-box" id="nxt-box">
+                <div class="var-name">nxt</div>
+                <div class="var-value" id="nxt-value">-</div>
+                <div class="var-desc">临时计算</div>
+            </div>
+        </div>
+
+        <!-- 状态信息 -->
+        <div class="status" id="status">
+            等待开始... 点击"开始演示"按钮
+        </div>
+
+        <!-- 代码区域 -->
+        <div class="code-section">
+            <div class="code-line"><span class="keyword">int</span> f1 = <span class="number">1</span>, f2 = <span class="number">1</span>;</div>
+            <div class="code-line"><span class="keyword">for</span> (i = <span class="number">1</span>; i <= n; ++i) {</div>
+            <div class="code-line" id="line-printf" style="margin-left: 20px;">    <span class="function">printf</span>(<span class="string">"%d "</span>, f1);  <span class="comment">// ① 先输出当前项</span></div>
+            <div class="code-line" id="line-nxt" style="margin-left: 20px;">    <span class="keyword">int</span> nxt = f1 + f2;  <span class="comment">// ② 计算下一项</span></div>
+            <div class="code-line" id="line-f1" style="margin-left: 20px;">    f1 = f2;  <span class="comment">// ③ f1向前滚动</span></div>
+            <div class="code-line" id="line-f2" style="margin-left: 20px;">    f2 = nxt;  <span class="comment">// ④ f2接收新值</span></div>
+            <div class="code-line">}</div>
+        </div>
+
+        <!-- 输出区域 -->
+        <div class="output-section">
+            <div class="output-title">📺 程序输出：</div>
+            <div class="output-content" id="output"></div>
+        </div>
+
+        <!-- 控制按钮 -->
+        <div class="controls">
+            <button class="btn-start" onclick="startDemo()" id="btn-start">开始演示</button>
+            <button class="btn-next" onclick="nextStep()" id="btn-next" disabled>下一步</button>
+            <button class="btn-reset" onclick="reset()">重置</button>
+        </div>
+
+        <!-- 说明 -->
+        <div class="explanation">
+            <strong>📖 使用说明：</strong><br>
+            1️⃣ 点击"开始演示"启动动画<br>
+            2️⃣ 点击"下一步"逐步执行每个操作<br>
+            3️⃣ 观察变量框的高亮和数值变化<br>
+            4️⃣ 代码左侧蓝色高亮表示当前执行的语句<br>
+            5️⃣ 演示会执行10次循环（输出斐波那契数列前10项）
+        </div>
+    </div>
+
+    <script>
+        let f1 = 1, f2 = 1, nxt = 0;
+        let i = 0;
+        let step = 0;
+        let maxIterations = 10;
+        let output = [];
+
+        const f1Box = document.getElementById('f1-box');
+        const f2Box = document.getElementById('f2-box');
+        const nxtBox = document.getElementById('nxt-box');
+
+        const f1Value = document.getElementById('f1-value');
+        const f2Value = document.getElementById('f2-value');
+        const nxtValue = document.getElementById('nxt-value');
+
+        const status = document.getElementById('status');
+        const outputDiv = document.getElementById('output');
+
+        const btnStart = document.getElementById('btn-start');
+        const btnNext = document.getElementById('btn-next');
+
+        function clearHighlights() {
+            f1Box.classList.remove('highlight');
+            f2Box.classList.remove('highlight');
+            nxtBox.classList.remove('highlight');
+
+            document.querySelectorAll('.code-line').forEach(line => {
+                line.classList.remove('active');
+            });
+        }
+
+        function updateDisplay() {
+            f1Value.textContent = f1;
+            f2Value.textContent = f2;
+            nxtValue.textContent = nxt === 0 ? '-' : nxt;
+            outputDiv.innerHTML = output.map(num => `<span class="output-number">${num}</span>`).join('');
+        }
+
+        function startDemo() {
+            reset();
+            i = 1;
+            btnStart.disabled = true;
+            btnNext.disabled = false;
+            status.innerHTML = `<strong>第 ${i} 次循环开始</strong> - 准备执行 printf(f1)`;
+            step = 1;
+        }
+
+        function nextStep() {
+            clearHighlights();
+
+            if (i > maxIterations) {
+                status.innerHTML = `<strong>演示完成！</strong> 已输出斐波那契数列前 ${maxIterations} 项`;
+                btnNext.disabled = true;
+                return;
+            }
+
+            switch(step) {
+                case 1: // printf(f1)
+                    document.getElementById('line-printf').classList.add('active');
+                    f1Box.classList.add('highlight');
+                    output.push(f1);
+                    updateDisplay();
+                    status.innerHTML = `<strong>步骤①：</strong> 输出 f1 = ${f1}`;
+                    step = 2;
+                    break;
+
+                case 2: // nxt = f1 + f2
+                    document.getElementById('line-nxt').classList.add('active');
+                    f1Box.classList.add('highlight');
+                    f2Box.classList.add('highlight');
+                    nxtBox.classList.add('highlight');
+                    nxt = f1 + f2;
+                    updateDisplay();
+                    status.innerHTML = `<strong>步骤②：</strong> 计算 nxt = f1 + f2 = ${f1} + ${f2} = ${nxt}`;
+                    step = 3;
+                    break;
+
+                case 3: // f1 = f2
+                    document.getElementById('line-f1').classList.add('active');
+                    f1Box.classList.add('highlight');
+                    f2Box.classList.add('highlight');
+                    const oldF1 = f1;
+                    f1 = f2;
+                    updateDisplay();
+                    status.innerHTML = `<strong>步骤③：</strong> f1 向前滚动，f1 从 ${oldF1} 变成 ${f1}`;
+                    step = 4;
+                    break;
+
+                case 4: // f2 = nxt
+                    document.getElementById('line-f2').classList.add('active');
+                    f2Box.classList.add('highlight');
+                    nxtBox.classList.add('highlight');
+                    const oldF2 = f2;
+                    f2 = nxt;
+                    updateDisplay();
+                    status.innerHTML = `<strong>步骤④：</strong> f2 接收新值，f2 从 ${oldF2} 变成 ${f2}`;
+                    step = 5;
+                    break;
+
+                case 5: // 准备下一轮
+                    clearHighlights();
+                    i++;
+                    nxt = 0;
+                    updateDisplay();
+
+                    if (i <= maxIterations) {
+                        status.innerHTML = `<strong>第 ${i} 次循环开始</strong> - 准备执行 printf(f1)`;
+                        step = 1;
+                    } else {
+                        status.innerHTML = `<strong>演示完成！</strong> 已输出斐波那契数列前 ${maxIterations} 项`;
+                        btnNext.disabled = true;
+                    }
+                    break;
+            }
+        }
+
+        function reset() {
+            f1 = 1;
+            f2 = 1;
+            nxt = 0;
+            i = 0;
+            step = 0;
+            output = [];
+
+            updateDisplay();
+            clearHighlights();
+
+            btnStart.disabled = false;
+            btnNext.disabled = true;
+            status.innerHTML = '等待开始... 点击"开始演示"按钮';
+        }
+
+        // 初始化显示
+        updateDisplay();
+    </script>
+</body>
+</html>

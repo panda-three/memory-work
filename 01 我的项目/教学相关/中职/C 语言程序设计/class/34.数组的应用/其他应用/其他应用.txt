@@ -1,0 +1,138 @@
+第十五章 数组的其他应用
+
+【课堂练】
+
+一、程序填空题（共 9 分）
+
+1. 程序填空题：将输入的一个十进制正整数转换为十六进制字符串形式并显示。请将程序填充完整。
+#include <stdio.h>
+void main()
+{
+    char dex[17] = {"0123456789ABCDEF"};
+    int c[8], i, base = 16;
+    int n;
+    printf("输入十进制正整数：");
+    scanf("%d", &n);
+    i = 0;
+    do
+    {
+        c[i++] = _______ (1) _______;
+        n = n / base;
+    } while (n);
+    printf("对应的十六进制数：");
+    for (i = _______ (2) _______; i >= 0; i--)
+        printf("%c", dex[ _______(3) _______]);
+    printf("\n");
+}
+
+二、程序改错题（共 9 分）
+下列程序是将一维数组 a 的元素逆序。下面给定的程序存在错误，请改正。
+#include <stdio.h>
+#define N 10
+void main()
+{
+    int i, t;
+    int a[N] = {23, 0, -4, 8, 9, 13, 6, -21, 17, 5};
+    for (i = 0; i < N; i++)
+        printf("%4d\t", a[i]);
+    printf("\n");
+    /******FOUND(1)******/
+    for (i = 0; i < N; i++)
+    {
+        t = a[i];
+         /******FOUND(2)******/
+        a[i] = a[N-i];
+        /******FOUND(3)******/
+        a[N-i] = t;
+    }
+    for (i = 0; i < N; i++)
+        printf("%d\t", a[i]);
+    printf("\n");
+}
+
+【课后练】
+
+一、程序填空题（每题 9 分，共 18 分）
+
+1. 下列程序的功能是从键盘输入一字符串，然后对字符串进行逆序。请将程序填充完整。
+#include <stdio.h>
+#include <string.h>
+void main()
+{
+    char str[80], c;
+    int len, i;
+    gets(str);
+    len = _______(1) _______;
+    for (i = len - 1;_______ (2) _______; i--)
+    {
+        c = str[i];
+        str[i] = _______(3) _______;
+        str[len - 1 - i] = c;
+    }
+    printf("The inversed string is : ");
+    puts(str);
+}
+2. 下列程序的功能是：用二维数组打印出杨辉三角形前 10 行。请将程序填充完整。
+#include <stdio.h>
+void main()
+{
+    int i, j, a[10][10] = {0};
+    for (i = 0; i < 10; i++)
+    {
+    	a[i][0] = 1;
+        _______(1) _______;
+	}  
+    for (i = 2; i < 10; i++)
+        for (j = 1; j < i; j++)
+            a[i][j] =_______ (2) _______;
+    for (i = 0; i < 10; i++)
+    {
+        for (j = 0; j <=_______ (3) _______; j++)
+            printf("%4d", a[i][j]);
+        printf("\n");
+    }
+}
+
+二、程序改错题（15 分）
+1. 程序的功能是将字符串 s 正序和逆序进行连接，形成新的字符串 t。例如，当字符串 s 为 "ABCD" 时，形成的新串 t 为 "ABCDDCBA"。
+#include <stdio.h>
+void main()
+{
+    int i, d;
+    char s[100], t[100];
+    printf("Please enter string s:");
+    /******FOUND(1)******/
+    scanf("%s", &s);
+    d = strlen(s);
+    for (i = 0; i < d; i++)
+        t[i] = s[i];
+    for (i = 0; i < d; i++)
+        /******FOUND(2)******/
+        t[d + i] = s[d - i];
+    /******FOUND(3)******/
+    t[2 * d - 1] = '\0';
+    printf("The result is: %s\n", t);
+}
+
+2. 下列程序将数组 s 中的数字字符串转换成整数，并返回该数。例如 s[] 中为 "123"，转换后为 123。
+#include <stdio.h>
+void main()
+{
+    int i, sum;
+    int s[10] = "123";
+    sum = 0;
+    /******FOUND(1)******/
+    for (i = 0; i < 10; i++)
+    {
+    	/******FOUND(2)******/
+        sum = sum + s[i] - '0';
+    }
+    printf("%d\n", sum);
+}
+
+三、程序设计题（共 12 分）
+编写程序，在二维数组中填入以下数据，并显示。
+0 0 0 10
+0 0 9 8
+0 7 6 5
+4 3 2 1

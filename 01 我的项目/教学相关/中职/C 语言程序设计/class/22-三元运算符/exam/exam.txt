@@ -1,0 +1,86 @@
+
+  第1题：成绩等级判断（三元运算符）
+
+  /*
+  题目：输入一个考试分数（0-100），使用三元运算符判断是否及格        
+  要求：60分及以上输出"及格"，60分以下输出"不及格"
+  */
+  #include <stdio.h>
+
+  int main() {
+      int score;
+      printf("请输入分数：");
+      scanf("%d", &score);
+
+      // 使用三元运算符判断
+      printf("成绩状态：%s\n", score >= 60 ? "及格" : "不及格");     
+
+      return 0;
+  }
+
+  第2题：找最大值（三元运算符嵌套）
+
+  /*
+  题目：输入三个整数，找出最大值
+  */
+  #include <stdio.h>
+
+  int main() {
+      int a, b, c, max;
+      printf("请输入三个整数（空格分隔）：");
+      scanf("%d %d %d", &a, &b, &c);
+
+      // 使用嵌套的三元运算符
+      max = (a > b) ? ((a > c) ? a : c) : ((b > c) ? b : c);
+
+      printf("最大值是：%d\n", max);
+
+      return 0;
+  }
+
+  第3题：奇偶数判断（三元+取模运算符）
+
+  /*
+  题目：输入一个整，判断是奇数还是偶数
+  */
+  #include <stdio.h>
+
+  int main() {
+      int num;
+      printf("请输入一个整数：");
+      scanf("%d", &num);
+
+      // 使用三元运算符判断奇偶
+      printf("%d是%s数\n", num, (num % 2 == 0) ? "偶" : "奇");
+
+      return 0;
+  }
+
+  第4题：计算折扣价（算术+赋值+三元运算符）
+
+  /*
+  题目：商品原价100元，购买数量5个以上打8折，否则打9折
+  输入购买数量，计算并输出应付金额
+  */
+  #include <stdio.h>
+
+  int main() {
+      int quantity;
+      double price = 100.0, discount, total;
+
+      printf("请输入购买数量：");
+      scanf("%d", &quantity);
+
+      // 使用三元运算符确定折扣
+      discount = (quantity > 5) ? 0.8 : 0.9;
+
+      // 计算总价
+      total = price * quantity * discount;
+
+      printf("原价：%.2f元/个\n", price);
+      printf("数量：%d个\n", quantity);
+      printf("折扣：%.0f折\n", discount * 10);
+      printf("应付金额：%.2f元\n", total);
+
+      return 0;
+  }

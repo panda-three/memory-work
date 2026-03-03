@@ -1,0 +1,158 @@
+第六节 二维数组作为函数参数 （满分40分）
+
+【课堂练】
+一、选择题（每题3分，共6分）
+1. 已有以下数组定义和f函数调用语句：int a[3][4]; f(a); 则在f函数的说明中，对形参数组array的正确定义方式为
+   A. f(int array[][6])  B. f(int array[3][ )
+   C. f(int array[][4])  D. f(int array[2][5])
+
+2. 若函数调用时，用数组名作为函数的参数，以下叙述中正确的是（  ）
+   A. 实参与其对应的形参分别占用不同的存储空间
+   B. 实参与其对应的形参占用相同的存储空间
+   C. 实参将其地址传递给形参，同时形参也会将该地址传递给实参
+   D. 实参将其地址传递给形参，等同实现了参数之间的双向传递
+
+二、程序阅读题（每题5分，共10分）
+1. #include <stdio.h>
+   func(int a[][3])
+   {
+       int i, j, sum = 0;
+       for(i = 0; i < 3; i++)
+           for(j = 0; j < 3; j++)
+           {
+               a[i][j] = i + j;
+               if(i == j) sum = sum + a[i][j];
+           }
+       return sum;
+   }
+   void main()
+   {
+       int a[3][3] = {1, 3, 5, 7, 9, 11, 13, 15, 17};
+       int sum;
+       sum = func(a);
+       printf("sum = %d", sum);
+   }
+
+2. #include <stdio.h>
+   func(int arr[][4], int m)
+   {
+       int i, j, k;
+       k = 0;
+       for(i = 0; i < 3; i++)
+           for(j = 0; j < 4; j++)
+               if(arr[i][j] < m)
+                   k = k + arr[i][j];
+       return k;
+   }
+   void main()
+   {
+       // 代码省略
+   }
+三、程序填空题（共12分）
+有一个3×4的矩阵，求所有元素中的最大值，请将程序填充完整。
+#include <stdio.h>
+max(int b[][4])
+{
+    int i, j, maxi;
+    maxi = (1) ;
+    for(i = 0; i < 3; i++)
+        for(j = 0; j < 4; j++)
+            if( (2) ) maxi = b[i][j];
+    return(maxi);
+}
+void main()
+{
+    int a[3][4] = {10, 20, 30, 40, 2, 4, 6, 8, 1, 3, 5, 7};
+    printf("max is %d\n", (3) );
+}
+
+四、程序改错题（共12分）
+函数genyh()的功能是生成杨辉三角的前八行。下列给定的程序存在错误，请改正。
+#include <stdio.h>
+#define N 8
+void genyh(int a[][N])
+{
+    int i, j;
+    for(i = 0; i < N; i++)
+        for(j = 0; j <= i; j++)
+        {
+            /* ********FOUND(1)******** */
+            a[0][i] = a[i][0] = 1;
+            /* ********FOUND(2)******** */
+            for(j = 1; j <= i; j++)
+                a[i][j] = a[i-1][j-1] + a[i-1][j];
+        }
+}
+int main()
+{
+    int i, j;
+    a[N][N];
+    /* ********FOUND(3)******** */
+    genyh(a[N][N]);
+    for(i = 0; i < N; i++)
+    {
+        for(j = 0; j <= i; j++)
+        {
+            /* 代码省略 */
+        }
+    }
+}
+
+【课后练】
+（满分30分）
+
+一、程序改错题（共15分）
+主函数main()调用函数change()将二维数组strrow中的字符按列存入一维数组strcol中。下列给定的程序存在错误，请改正。
+#include <stdio.h>
+#include <conio.h>
+/*********FOUND(1)*********/
+change(char r[5][5], char s[])
+{
+    int i, j;
+    for(i=0; i<5; i++)
+        for(j=0; i<5; j++)
+            /********FOUND(2)**********/
+            s[3*j+i]=r[i][j];
+    s[5]=0;
+}
+void main()
+{
+    char strrow[][5] = {{'C', 'r', 'r', 'x'},
+                        {'o', 'a', 'T', 'r'}, {'P', 'g', 'm', 'e'}, {'s', '1', 'p', 'j'}};
+    char strcol[16];
+    change(strrow, strcol);
+    puts(strcol);
+}
+
+二、程序填空题（共15分）
+主函数main()调用fun()函数，其中fun函数的功能是：计算二维数组周边元素之和，作为函数值返回。二维数组中的值在主函数中赋子。例如，若二维数组中的值为：
+1 3 5 7 9
+2 9 9 9 4
+6 9 9 9 8
+1 3 5 7 0
+则函数值1+3+5+7+9+4+8+0+7+5+3+1+6+2=61。
+#include <stdio.h>
+int fun( (1) )
+{
+    int i, j, sum = 0;
+    for(i = 0; i < 4; i++)
+        for(j = 0; j < 5; j++)
+            if( (2) )
+                sum += a[i][j];
+    return sum;
+}
+int main()
+{
+    int aa[4][5] = {{1, 3, 5, 7, 9}, {2, 9, 9, 9, 4}, {6, 9, 9, 9, 8}, {1, 3, 5, 7, 0}};
+    int i, j, y;
+    printf("The original data is:\n");
+    for(i = 0; i < 4; i++)
+    {
+        for(j = 0; j < 5; j++)
+            printf("%6d", aa[i][j]);
+        printf("\n");
+    }
+    y = (3) ;
+    printf("The sum: %d\n", y);
+    return 0;
+}

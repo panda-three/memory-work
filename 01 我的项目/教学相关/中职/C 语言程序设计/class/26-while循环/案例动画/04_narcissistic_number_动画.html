@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>练习4：水仙花数(100-999)</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Microsoft YaHei', sans-serif; background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); height: 100vh; overflow: hidden; display: flex; }
+        .main { flex: 1; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+        .sidebar { width: 260px; background: rgba(255,255,255,0.95); padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+        h1 { color: white; font-size: 1.7em; text-align: center; margin: 0; }
+        .panel { background: white; border-radius: 12px; padding: 15px; flex: 1; }
+        .code { background: #2d3748; color: #f7fafc; padding: 8px; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 0.85em; }
+        .code-line { padding: 2px 6px; border-radius: 3px; }
+        .code-line.hl { background: #fa709a; font-weight: bold; }
+        .vars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 8px 0; }
+        .vb { padding: 10px; background: #f0f0f0; border: 2px solid #fa709a; border-radius: 8px; text-align: center; font-size: 1em; font-weight: bold; }
+        .vb.ch { background: #fee140; }
+        .flowers { display: flex; gap: 10px; flex-wrap: wrap; }
+        .flower { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); color: white; padding: 12px; border-radius: 10px; text-align: center; min-width: 80px; }
+        button { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); color: #000; border: none; padding: 10px; font-size: 0.95em; border-radius: 20px; cursor: pointer; font-weight: bold; }
+        button:hover { transform: translateY(-2px); }
+        .info { background: #f8f9fa; padding: 8px; border-radius: 8px; font-size: 0.8em; }
+        .status { background: #fee6ef; padding: 8px; border-radius: 8px; border-left: 4px solid #fa709a; font-size: 0.9em; margin: 8px 0; }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <h1>练习4：水仙花数（各位立方和=自身）</h1>
+
+        <div style="display: grid; grid-template-columns: 1.3fr 1fr; gap: 12px; flex: 1;">
+            <div class="panel">
+                <h3 style="color: #fa709a; margin-bottom: 8px; font-size: 1.1em;">代码</h3>
+                <div class="code">
+                    <div class="code-line" id="l1">int num=100, count=0;</div>
+                    <div class="code-line" id="l2">while (num &lt;= 999) {</div>
+                    <div class="code-line" id="l3">&nbsp;&nbsp;int ge=num%10;</div>
+                    <div class="code-line" id="l4">&nbsp;&nbsp;int shi=num/10%10;</div>
+                    <div class="code-line" id="l5">&nbsp;&nbsp;int bai=num/100;</div>
+                    <div class="code-line" id="l6">&nbsp;&nbsp;int sum=ge*ge*ge+shi*shi*shi+bai*bai*bai;</div>
+                    <div class="code-line" id="l7">&nbsp;&nbsp;if (sum == num) {</div>
+                    <div class="code-line" id="l8">&nbsp;&nbsp;&nbsp;&nbsp;printf("%d\\n", num);</div>
+                    <div class="code-line" id="l9">&nbsp;&nbsp;&nbsp;&nbsp;count++;</div>
+                    <div class="code-line" id="l10">&nbsp;&nbsp;}</div>
+                    <div class="code-line" id="l11">&nbsp;&nbsp;num++;</div>
+                    <div class="code-line" id="l12">}</div>
+                </div>
+                <div class="vars">
+                    <div class="vb" id="vn">num=?</div>
+                    <div class="vb" id="vb">百=?</div>
+                    <div class="vb" id="vs">十=?</div>
+                    <div class="vb" id="vg">个=?</div>
+                    <div class="vb" id="vsum">sum=?</div>
+                    <div class="vb" id="vc">count=?</div>
+                </div>
+                <div class="status" id="st">未开始</div>
+            </div>
+
+            <div class="panel">
+                <h3 style="color: #fa709a; margin-bottom: 8px; font-size: 1.1em;">找到的水仙花数</h3>
+                <div class="flowers" id="flowers"></div>
+                <div class="info" style="margin-top: auto;">
+                    <strong>定义：</strong>153 = 1³+5³+3³ = 1+125+27<br>
+                    共4个：153, 370, 371, 407
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sidebar">
+        <h3 style="color: #fa709a; text-align: center;">控制</h3>
+        <button onclick="auto()">快速演示</button>
+        <button onclick="step()">单步</button>
+        <button onclick="reset()">重置</button>
+        <hr>
+        <div class="info">
+            <h4 style="color: #fa709a;">知识点</h4>
+            <ul style="padding-left: 18px; font-size: 0.85em;">
+                <li>个位: num%10</li>
+                <li>十位: num/10%10</li>
+                <li>百位: num/100</li>
+                <li>立方: n*n*n</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        let num, count, s, ge, shi, bai, sum, flowers = [];
+
+        function hl(id) {
+            document.querySelectorAll('.code-line').forEach(el => el.classList.remove('hl'));
+            if (id) document.getElementById(id).classList.add('hl');
+        }
+
+        function upd() {
+            document.getElementById('vn').textContent = `num=${num}`;
+            document.getElementById('vb').textContent = `百=${bai||'?'}`;
+            document.getElementById('vs').textContent = `十=${shi||'?'}`;
+            document.getElementById('vg').textContent = `个=${ge||'?'}`;
+            document.getElementById('vsum').textContent = `sum=${sum||'?'}`;
+            document.getElementById('vc').textContent = `count=${count}`;
+        }
+
+        function add(n, formula) {
+            flowers.push(n);
+            const div = document.createElement('div');
+            div.className = 'flower';
+            div.innerHTML = `<div style="font-size:1.3em">${n}</div><div style="font-size:0.7em">${formula}</div>`;
+            document.getElementById('flowers').appendChild(div);
+        }
+
+        function step() {
+            if (s === 0) { num = 100; count = 0; ge=shi=bai=sum=undefined; s++; hl('l1'); upd(); document.getElementById('st').textContent = '初始化'; return; }
+
+            if (num <= 999) {
+                const sub = (s - 1) % 5;
+                if (sub === 0) {
+                    hl('l3');
+                    ge = num % 10;
+                    shi = Math.floor(num / 10) % 10;
+                    bai = Math.floor(num / 100);
+                    upd();
+                    document.getElementById('st').textContent = `拆分${num}: 百=${bai},十=${shi},个=${ge}`;
+                } else if (sub === 1) {
+                    hl('l6');
+                    sum = ge*ge*ge + shi*shi*shi + bai*bai*bai;
+                    upd();
+                    document.getElementById('st').textContent = `计算: ${bai}³+${shi}³+${ge}³ = ${sum}`;
+                } else if (sub === 2) {
+                    hl('l7');
+                    document.getElementById('st').textContent = `判断: ${sum}==${num}? ${sum===num?'是!':'否'}`;
+                } else if (sub === 3) {
+                    if (sum === num) {
+                        hl('l9');
+                        count++;
+                        add(num, `${bai}³+${shi}³+${ge}³`);
+                        upd();
+                        document.getElementById('st').textContent = `找到水仙花数${num}!`;
+                    }
+                } else {
+                    hl('l11');
+                    num++;
+                    upd();
+                }
+                s++;
+            } else {
+                hl('l2');
+                document.getElementById('st').textContent = `完成！共${count}个：${flowers.join(',')}`;
+                s = -1;
+            }
+        }
+
+        function auto() {
+            reset();
+            const t = setInterval(() => {
+                if (s !== -1 && num <= 999) step();
+                else clearInterval(t);
+            }, 40);
+        }
+
+        function reset() {
+            num = 100; count = 0; s = 0; ge=shi=bai=sum=undefined; flowers = [];
+            document.getElementById('vn').textContent = 'num=?';
+            document.getElementById('vb').textContent = '百=?';
+            document.getElementById('vs').textContent = '十=?';
+            document.getElementById('vg').textContent = '个=?';
+            document.getElementById('vsum').textContent = 'sum=?';
+            document.getElementById('vc').textContent = 'count=?';
+            document.getElementById('st').textContent = '已重置';
+            document.getElementById('flowers').innerHTML = '';
+            hl(null);
+        }
+
+        window.onload = reset;
+    </script>
+</body>
+</html>

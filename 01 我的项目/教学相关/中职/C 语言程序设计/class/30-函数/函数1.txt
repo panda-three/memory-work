@@ -1,0 +1,176 @@
+1.#include <stdio.h>
+fun(int i,int j)
+{
+    int x=7;
+    printf("i=%d;j=%d;x=%d\n",i,j,x);
+}
+main()
+{
+    int i=2,x=5,j=7;
+    fun(j,6);
+    printf("i=%d;j=%d;x=%d\n",i,j,x);
+}
+2.
+#include <stdio.h>
+func(int a,int b)
+{
+    int c;
+    c=a+b;
+    return c;
+}
+void main()
+{
+    int x=6,y=7,z=8,r;
+    r=func((x--,y++,x+y),z--);
+    printf("%d\n",r); 
+}
+3.#include <stdio.h>
+prn(int a,int b,int c,int max,int min)
+{
+    max=(max=a>b?a:b)>c?max:c;
+    min=(min=a<b?a:b)<c?min:c;
+    printf("max=%d  min=%d\n",max,min);
+}
+void main()
+{
+    int x,y;
+    x=y=0;
+    prn(19,23,-4,x,y);
+    printf("max=%d  min=%d",x,y);
+}
+4.下面函数 func 的功能是 ________。
+#include <stdio.h>
+#include <math.h>
+long func(long num)
+{
+    long k=1;
+    num=abs(num);
+    do {
+        k *= num % 10;
+        num /= 10;
+    } while(num);
+    return k;
+}
+main()
+{
+    long n;
+    printf("\nPlease enter a number: ");
+    scanf("%ld",&n);
+    printf("\nThe product of its digits is %ld.",func(n));
+}
+5.#include <stdio.h>
+int t(int x,int y)
+{
+    return (y-x)*x;
+}
+void main()
+{
+    int a=3,b=4,c=5,d;
+    d=t(t(a,b),t(a,c));
+    printf("%d\n",d);
+}
+6.#include <stdio.h>
+void f(int a,int b)
+{
+    int t;
+    t=a; a=b; b=t;
+}
+void main()
+{
+    int x=1,y=3,z=2;
+    if(x>y) f(x,y);
+    else if(y>z) f(x,z);
+    else f(x,z);
+    printf("%d,%d,%d\n",x,y,z);
+}
+7.
+以下程序的功能是求任意两个整数 a 和 b 的最大公约数，并予以显示。请将程序补充完整。
+#include <stdio.h>
+int codivisor(int n1,int n2)/**********/
+{
+    int t;
+    while (n2!=0) { 
+	    //(1) ; 
+		n1=n2; 
+		n2=t; 
+	}
+    return /*(2)*/ ;
+}
+void main()
+{
+    int a,b,x;
+    printf("please input two numbers:");
+    scanf("%d%d",&a,&b);
+    x=codivisor(a,b);
+    printf("maximum common divisor of %d and %d is: %d\n",a,b,x);
+}
+8.以下程序的功能是计算函数 F(x,y,z) = (x+z)/(y-z) + (y+2z)/(y-2z) 的值，请将程序补充完整。
+#include <stdio.h>
+float f(float x,float y)
+{
+    float value;
+    value=/*1*/;
+    return value;
+}
+main()
+{
+    float x,y,z;
+    scanf("%f%f%f",&x,&y,&z);
+    sum=f(x+z,y-z)+f(/*2*/);
+    printf("sum=%f\n",sum);
+}
+9.以下程序是将输入的一个整数反序并输出来，例如输入 1234，则输出 4321，输入 -1234，则输出 -4321，请将程序补充完整。
+#include <stdio.h>
+void printp(long int n)
+{
+    int i=0;
+    if(n==0) return;
+    else
+     while(n)
+     {
+//        if(/*1*/)  printf("%ld",n%10);
+        else printf("%ld",-n%10);
+        i++;
+        /*2*/
+     }
+}
+void main()
+{
+    long int n;
+    scanf("%ld",&n);
+    printp(n);
+    printf("\n");
+}
+三、程序改错题（20 分）
+主函数 main() 调用 fun() 函数，其中 fun 函数的功能是：找出 100 到 999 之间（含 100 和 999）所有各位上数字之和为 x（x 为正整数）
+的整数并输出，符合条件的整数个数作为函数值返回。例如，当 x 值为 5 时，
+满足条件的整数有：104, 113, 122, 131, 140, 203, 212, 220, 230, 302, 311, 320, 401, 410, 500，一共 15 个。
+#include<stdio.h>
+void fun(int x)
+{
+    int n,s1,s2,s3,t;
+    n=0;
+    t=100;
+    while(t<=999)
+    {
+        s1=t%10; s2=t%10%10; s3=t/100;
+        if(s1+s2+s3==x)
+        {
+            printf("%5d",t);
+            n++;
+        }
+        t++;
+    }
+    return n;
+}
+int main()
+{
+    int x=-1,y;
+    while(x<=0)
+    {
+        printf("Please input x(x>0):");
+        scanf("%d",&x);
+    }
+    fun(x);
+    printf("\nThe result is: %d\n",y);
+}

@@ -1,0 +1,359 @@
+1.#include <stdio.h>
+void f(int a[])
+{
+   int i=0;
+   while(a[i]<=10)
+   {
+       printf("%4d", a[i]);
+       i++;
+   }
+}
+void main()
+{
+   int a[] = {1, 5, 10, 9, 11, 7};
+   f(a);
+}
+
+2.#include <stdio.h>
+void swap1(int c[])
+{
+    int t;
+    t = c[0]; c[0] = c[1]; c[1] = t;
+}
+void swap2(int c0, int c1)
+{
+    int t;
+    t = c0; c0 = c1; c1 = t;
+}
+void main()
+{
+    int a[2] = {4, 7}, b[2] = {4, 7};
+    swap1(a);
+    swap2(b[0], b[1]);
+    printf("%d, %d, %d, %d\n", a[0],a[1], b[0], b[1]);
+}
+
+3.#include <stdio.h>
+func(int a[][3])
+{
+   int i, j, sum = 0;
+   for(i = 0; i < 3; i++)
+       for(j = 0; j < 3; j++)
+       {
+           a[i][j] = i + j;
+           if(i == j) sum = sum + a[i][j];
+       }
+   return sum;
+}
+void main()
+{
+   int a[3][3] = {1, 3, 5, 7, 9, 11, 13, 15, 17};
+   int sum;
+   sum = func(a);
+   printf("sum = %d", sum);
+}
+
+4.有一个3×4的矩阵，求所有元素中的最大值，请将程序填充完整。
+#include <stdio.h>
+max(int b[][4])
+{
+    int i, j, maxi;
+    maxi = (1) ;
+    for(i = 0; i < 3; i++)
+        for(j = 0; j < 4; j++)
+            if( (2) ) maxi = b[i][j];
+    return(maxi);
+}
+void main()
+{
+    int a[3][4] = {10, 20, 30, 40, 2, 4, 6, 8, 1, 3, 5, 7};
+    printf("max is %d\n", (3) );
+}
+
+5.#include<stdio.h>
+void main()
+{
+	int x1, x2, x3, i;
+	int a[] = {-5, 3, 6, 0, -5, 7, 2, 8, 0, 3};
+	x1 = x2 = x3 = 0;
+	for(i = 0; i < 10; i++)
+		if(a[i] < 0) x1++;
+		else if(a[i] == 0) x2++;
+		else if(a[i] > 0) x3++;
+	printf("%d %d %d\n", x1, x2, x3);
+}
+6.如图输入下列数据，写出下列程序的输出结果。（核对）
+2 3 1 2 3 3 2 4 2 2 3 1 0
+#include<stdio.h>
+void main()
+{
+	int a[5], n, i;
+	for(i = 1; i <= 4; i++)
+	a[i] = 0;
+	scanf("%d", &n);
+	while(n > 0)
+	{
+		a[n]++;
+		scanf("%d", &n);
+	}
+	for(i = 1; i <= 4; i++)
+	printf("%d ", a[i]);
+}
+7. #include <stdio.h>
+   #include <string.h>
+   void main()
+   {
+       int i, k, v[4] = {0};
+       char s[] = "1424134211";
+       for(k = 0; s[k]; k++)
+       {
+           switch(s[k])
+           {
+            case '1': i=0; break;
+            case '2': i=1; break;
+            case '3': i=2; break;
+            case '4': i=3;
+          }
+        v[i]++;
+       }
+   for(k=0; k<4; k++)
+    printf("%4d", v[k]);
+}
+8.#include <stdio.h>
+void main()
+{
+    int i, x[10] = {1, 3, 1, 2, 0, 2, 3, 2, 0, 3}, n[4] = {0};
+    for(i=0; i<10; i++)
+        n[x[i]]++;
+    for(i=0; i<4; i++)
+        printf("%d ", n[i]);
+}
+
+9. #include<stdio.h>
+void main()
+{
+    int i,j,row,column,m;
+    int array[3][3]={{100,200,300},{28,72,-30},{-850,2,6}};
+    m=array[0][0];
+    for(i=0;i<3;i++)
+        for(j=0;j<3;j++)
+            if(array[i][j]<m)
+                {m=array[i][j]; row=i; column=j;}
+    printf("%d,%d,%d",m,row,column);
+}
+10.#include <stdio.h>
+void main()
+{
+    int i, a[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10}, x;
+    x = a[0];
+    for (i = 0; i < 9; i++)
+        a[i] = a[i + 1];
+    a[9] = x;
+    for (i = 0; i < 10; i++)
+        printf("%d\t", a[i]);
+}
+
+11. #include <stdio.h>
+void main()
+{
+    int i, j, a[6] = {31, 22, 53, 64, 75},x,t;
+    x = 60;
+    for (i = 0; i < 4; i++)
+        for (j = i + 1; j < 5; j++)
+            if (a[i] > a[j])
+            {
+                t = a[i]; 
+                a[i] = a[j];
+                a[j] = t;
+            }
+    for (i = 4; i >= 0; i--)
+        if (x < a[i]) a[i + 1] = a[i];
+        else break;
+    a[i + 1] = x;
+    for (i = 0; i < 6; i++)
+        printf("%d\t", a[i]);
+}
+12. #include<stdio.h>
+void main()
+{
+   int i,a[10]={31,22,53,64,75,96,67,48,39,10},x,p;
+   x=96;
+   for(i=0;i<10;i++)
+       if(a[i]==x) { p=i; break; }
+   for(i=p;i<9;i++)
+       a[i]=a[i+1];
+   for(i=0;i<9;i++)
+       printf("%d\t",a[i]);
+}
+  
+
+13. #include<stdio.h>
+void main()
+{
+   int i,j,n=0,b[3][3];
+   int a[9]={11,12,6,19,13,21,28,4,29};
+   for(i=0;i<3;i++)
+       for(j=0;j<3;j++)
+       {
+       	    b[i][j]=a[n];
+			n++;
+	   }
+	
+	for(i=0;i<3;i++){
+		for(j=0;j<3;j++)
+         printf("%4d",b[i][j]);
+		printf("\n");     
+	}     
+}
+
+14.#include <stdio.h>
+void main()
+{
+    int a[4][4] = {{1,2,3,4},{5,6,7,8},{9,10,11,12},{13,14,15,16}}, b[4][4];
+    int i,j;
+     for(i=0;i<4;i++)
+    {
+        for(j=0;j<4;j++)
+            printf("%3d",a[i][j]);
+        printf("\n");
+    }
+    printf("-----------------------------\n");
+
+    for(i=0;i<4;i++)
+        for(j=0;j<4;j++)
+            b[j][3-i]=a[i][j];
+            
+    for(i=0;i<4;i++)
+    {
+        for(j=0;j<4;j++)
+            printf("%3d",b[i][j]);
+        printf("\n");
+    }
+}
+
+15.#include <stdio.h>
+void main()
+{
+    int i,j;
+    int a[3][3] = {1,2,3,4,5,6,7,8,9};
+    int b[2][2] = {11,22,33,44};
+    int c[3][3];
+    for(i=0;i<3;i++)
+        for(j=0;j<3;j++)
+            if (i>=2||j>=2)
+                c[i][j]=a[i][j];
+            else
+                c[i][j]=a[i][j]+b[i][j];
+    for(i=0;i<3;i++)
+    {
+        for(j=0;j<3;j++)
+            printf("%d\t",c[i][j]);
+        printf("\n");
+    }
+}
+16. #include <stdio.h>
+void main()
+{
+    int i,j;
+    float v;
+    float a[4][3] = {11,2,13,14,-5,16,17,18,-9,-2,-23,24};
+    for(i=0;i<4;i++)
+    {
+        v=a[i][0];
+        for(j=1;j<3;j++)
+            v+=a[i][j];
+        v/=3;
+        for(j=0;j<3;j++)
+            a[i][j] -= v;
+    }
+    for(i=0;i<4;i++)
+    {
+        for(j=0;j<3;j++)
+            printf("%.1f\t",a[i][j]);
+        printf("\n");
+    }
+}
+
+17. #include <stdio.h>
+#define N 3
+void main()
+{
+    int a[N][N],b[N*N]={1,1},i,j;
+    for(i=2;i<N*N;i++)
+        b[i] = b[i-1]+b[i-2];
+    for(i=0;i<N;i++)
+        for(j=0;j<N;j++)
+            a[j][i] = b[i*N+j];
+    for(i=0;i<N;i++)
+    {
+        for(j=0;j<N;j++)
+        printf("%d\t",a[i][j]);
+     printf("\n");
+    }
+}
+18.将输入的一个十进制正整数转换为十六进制字符串形式并显示。请将程序填充完整。
+#include <stdio.h>
+void main()
+{
+    char dex[17] = {"0123456789ABCDEF"};
+    int c[8], i, base = 16;
+    int n;
+    printf("输入十进制正整数：");
+    scanf("%d", &n);
+    i = 0;
+    do
+    {
+        c[i++] = _______ (1) _______;
+        n = n / base;
+    } while (n);
+    printf("对应的十六进制数：");
+    for (i = _______ (2) _______; i >= 0; i--)
+        printf("%c", dex[ _______(3) _______]);
+    printf("\n");
+}
+
+19. 下列程序的功能是从键盘输入一字符串，然后对字符串进行逆序。请将程序填充完整。
+#include <stdio.h>
+#include <string.h>
+void main()
+{
+    char str[80], c;
+    int len, i;
+    gets(str);
+    len = _______(1) _______;
+    for (i = len - 1;_______ (2) _______; i--)
+    {
+        c = str[i];
+        str[i] = _______(3) _______;
+        str[len - 1 - i] = c;
+    }
+    printf("The inversed string is : ");
+    puts(str);
+}
+
+20. 下列程序的功能是：用二维数组打印出杨辉三角形前 10 行。请将程序填充完整。
+#include <stdio.h>
+void main()
+{
+    int i, j, a[10][10] = {0};
+    for (i = 0; i < 10; i++)
+    {
+    	a[i][0] = 1;
+        _______(1) _______;
+	}  
+    for (i = 2; i < 10; i++)
+        for (j = 1; j < i; j++)
+            a[i][j] =_______ (2) _______;
+    for (i = 0; i < 10; i++)
+    {
+        for (j = 0; j <=_______ (3) _______; j++)
+            printf("%4d", a[i][j]);
+        printf("\n");
+    }
+}
+1.从键盘输入10个有序整数，再从键盘输入一个待查的数，使用折半查找完成代码。
+2.从键盘输入10个整数，再从键盘输入一个待查的数，使用顺序查找完成代码。
+3.已知数组int a[6]={10,9,11,8,20,13}; 冒泡排序，插入，选择，顺序排序  
+4.已知数组int a[6]={10,9,11,8,20,13}; 数组左移右移
+5.已知数组int a[6]={1,2,3,4,6};现要插入5，不改变数组的顺序
+6.将矩阵int a[2][3]={1,2,3,4,5,6};转置

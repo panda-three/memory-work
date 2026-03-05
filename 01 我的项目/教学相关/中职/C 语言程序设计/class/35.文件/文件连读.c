@@ -1,5 +1,5 @@
 #include <stdio.h>
-void main()
+int main()
 {
     FILE *fp;
     int i=20,j=30,k,n;
@@ -12,5 +12,6 @@ void main()
     fscanf(fp,"%d%d",&k,&n);
     printf("%d%d\n",k,n);
     fclose(fp);
+    return 0;
 }
 

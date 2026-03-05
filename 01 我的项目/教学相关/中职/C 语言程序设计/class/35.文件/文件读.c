@@ -1,13 +1,13 @@
 #include <stdio.h>
-void main()
+int main()
 {
-   //╢Р©╙нд╪Ч 
+   //О©╫О©╫О©╫д╪О©╫ 
    FILE *fp=fopen("11.txt","r");
-   //╤ах║нд╪Ч 
+   //О©╫О©╫х║О©╫д╪О©╫ 
    char c=fgetc(fp);
    printf("%c\n",c);
-   //╧ь╠унд╪Ч 
-   fclose(file);
+   //О©╫ь╠О©╫О©╫д╪О©╫ 
+   fclose(fp);
 
-   
+   return 0;
 }
